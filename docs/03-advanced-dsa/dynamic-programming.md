@@ -15,8 +15,8 @@ prerequisites:
     to: /docs/recursion-and-call-stack
   - title: Big-O Notation & Complexity Analysis
     to: /docs/big-o-complexity
-pagination_prev: 03-advanced-dsa/backtracking
-pagination_next: 03-advanced-dsa/graph-theory
+pagination_prev: advanced-dsa/backtracking
+pagination_next: advanced-dsa/graph-theory
 path_step: 17
 ---
 

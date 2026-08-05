@@ -17,7 +17,7 @@ prerequisites:
     to: /docs/hash-maps-and-sets
   - title: Heaps & Priority Queues
     to: /docs/heaps-and-priority-queues
-pagination_prev: 04-domain-specific-dsa/state-machines-dags-langgraph
+pagination_prev: domain-specific-dsa/state-machines-dags-langgraph
 pagination_next: null
 path_step: 31
 ---

@@ -14,8 +14,8 @@ reading_time: 23
 prerequisites:
   - title: Big-O Notation & Complexity Analysis
     to: /docs/big-o-complexity
-pagination_prev: 01-foundation/big-o-complexity
-pagination_next: 01-foundation/hash-maps-and-sets
+pagination_prev: foundation/big-o-complexity
+pagination_next: foundation/hash-maps-and-sets
 path_step: 2
 ---
 

@@ -16,8 +16,8 @@ prerequisites:
     to: /docs/trees-and-bst
   - title: Graph Theory
     to: /docs/graph-theory
-pagination_prev: 03-advanced-dsa/shortest-path
-pagination_next: 03-advanced-dsa/greedy-algorithms
+pagination_prev: advanced-dsa/shortest-path
+pagination_next: advanced-dsa/greedy-algorithms
 path_step: 20
 ---
 

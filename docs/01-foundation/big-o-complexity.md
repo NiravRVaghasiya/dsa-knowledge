@@ -13,7 +13,7 @@ tags:
 difficulty: beginner
 reading_time: 28
 pagination_prev: null
-pagination_next: 01-foundation/arrays-and-strings
+pagination_next: foundation/arrays-and-strings
 path_step: 1
 ---
 

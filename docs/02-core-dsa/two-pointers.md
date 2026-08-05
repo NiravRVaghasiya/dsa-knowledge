@@ -14,8 +14,8 @@ reading_time: 27
 prerequisites:
   - title: Arrays & Strings
     to: /docs/arrays-and-strings
-pagination_prev: 01-foundation/python-internals-numpy-memory
-pagination_next: 02-core-dsa/sliding-window
+pagination_prev: foundation/python-internals-numpy-memory
+pagination_next: core-dsa/sliding-window
 path_step: 7
 ---
 

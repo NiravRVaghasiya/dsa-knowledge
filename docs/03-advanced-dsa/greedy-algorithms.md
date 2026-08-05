@@ -16,8 +16,8 @@ prerequisites:
     to: /docs/sorting-algorithms
   - title: Big-O Notation & Complexity Analysis
     to: /docs/big-o-complexity
-pagination_prev: 03-advanced-dsa/union-find
-pagination_next: 03-advanced-dsa/tries
+pagination_prev: advanced-dsa/union-find
+pagination_next: advanced-dsa/tries
 path_step: 21
 ---
 

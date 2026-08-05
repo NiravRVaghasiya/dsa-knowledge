@@ -15,8 +15,8 @@ reading_time: 40
 prerequisites:
   - title: Big-O Notation & Complexity Analysis
     to: /docs/big-o-complexity
-pagination_prev: 01-foundation/recursion-and-call-stack
-pagination_next: 02-core-dsa/two-pointers
+pagination_prev: foundation/recursion-and-call-stack
+pagination_next: core-dsa/two-pointers
 path_step: 6
 ---
 

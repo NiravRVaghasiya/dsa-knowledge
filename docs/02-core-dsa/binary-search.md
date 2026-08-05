@@ -16,8 +16,8 @@ prerequisites:
     to: /docs/arrays-and-strings
   - title: Big-O Notation & Complexity Analysis
     to: /docs/big-o-complexity
-pagination_prev: 02-core-dsa/sliding-window
-pagination_next: 02-core-dsa/sorting-algorithms
+pagination_prev: core-dsa/sliding-window
+pagination_next: core-dsa/sorting-algorithms
 path_step: 9
 ---
 

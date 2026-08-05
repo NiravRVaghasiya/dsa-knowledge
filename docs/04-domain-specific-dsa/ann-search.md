@@ -18,8 +18,8 @@ prerequisites:
     to: /docs/kd-trees-ball-trees
   - title: Hashing Patterns
     to: /docs/hashing-patterns
-pagination_prev: 04-domain-specific-dsa/kd-trees-ball-trees
-pagination_next: 04-domain-specific-dsa/tokenization
+pagination_prev: domain-specific-dsa/kd-trees-ball-trees
+pagination_next: domain-specific-dsa/tokenization
 path_step: 25
 ---
 

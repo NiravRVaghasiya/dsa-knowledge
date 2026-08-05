@@ -16,8 +16,8 @@ prerequisites:
     to: /docs/trees-and-bst
   - title: Hash Maps & Sets
     to: /docs/hash-maps-and-sets
-pagination_prev: 03-advanced-dsa/greedy-algorithms
-pagination_next: 03-advanced-dsa/segment-tree-fenwick
+pagination_prev: advanced-dsa/greedy-algorithms
+pagination_next: advanced-dsa/segment-tree-fenwick
 path_step: 22
 ---
 

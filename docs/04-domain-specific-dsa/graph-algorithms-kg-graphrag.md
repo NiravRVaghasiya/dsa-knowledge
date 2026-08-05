@@ -17,8 +17,8 @@ prerequisites:
     to: /docs/graph-theory
   - title: Shortest Path Algorithms
     to: /docs/shortest-path
-pagination_prev: 04-domain-specific-dsa/beam-search
-pagination_next: 04-domain-specific-dsa/state-machines-dags-langgraph
+pagination_prev: domain-specific-dsa/beam-search
+pagination_next: domain-specific-dsa/state-machines-dags-langgraph
 path_step: 29
 ---
 

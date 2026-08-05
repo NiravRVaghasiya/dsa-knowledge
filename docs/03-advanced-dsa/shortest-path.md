@@ -17,8 +17,8 @@ prerequisites:
     to: /docs/graph-theory
   - title: Heaps & Priority Queues
     to: /docs/heaps-and-priority-queues
-pagination_prev: 03-advanced-dsa/graph-theory
-pagination_next: 03-advanced-dsa/union-find
+pagination_prev: advanced-dsa/graph-theory
+pagination_next: advanced-dsa/union-find
 path_step: 19
 ---
 

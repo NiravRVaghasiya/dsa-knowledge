@@ -16,8 +16,8 @@ prerequisites:
     to: /docs/recursion-and-call-stack
   - title: Linked Lists
     to: /docs/linked-lists
-pagination_prev: 02-core-dsa/heaps-and-priority-queues
-pagination_next: 02-core-dsa/bfs-dfs
+pagination_prev: core-dsa/heaps-and-priority-queues
+pagination_next: core-dsa/bfs-dfs
 path_step: 13
 ---
 

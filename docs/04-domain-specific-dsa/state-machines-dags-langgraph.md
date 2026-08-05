@@ -15,8 +15,8 @@ reading_time: 32
 prerequisites:
   - title: Graph Theory
     to: /docs/graph-theory
-pagination_prev: 04-domain-specific-dsa/graph-algorithms-kg-graphrag
-pagination_next: 04-domain-specific-dsa/streaming-caching
+pagination_prev: domain-specific-dsa/graph-algorithms-kg-graphrag
+pagination_next: domain-specific-dsa/streaming-caching
 path_step: 30
 ---
 

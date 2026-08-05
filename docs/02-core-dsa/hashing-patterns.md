@@ -14,8 +14,8 @@ reading_time: 18
 prerequisites:
   - title: Hash Maps & Sets
     to: /docs/hash-maps-and-sets
-pagination_prev: 02-core-dsa/bfs-dfs
-pagination_next: 03-advanced-dsa/backtracking
+pagination_prev: core-dsa/bfs-dfs
+pagination_next: advanced-dsa/backtracking
 path_step: 15
 ---
 

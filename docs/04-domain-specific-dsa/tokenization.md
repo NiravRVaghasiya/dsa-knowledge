@@ -18,8 +18,8 @@ prerequisites:
     to: /docs/tries
   - title: Hash Maps & Sets
     to: /docs/hash-maps-and-sets
-pagination_prev: 04-domain-specific-dsa/ann-search
-pagination_next: 04-domain-specific-dsa/matrix-ops-attention-sparse
+pagination_prev: domain-specific-dsa/ann-search
+pagination_next: domain-specific-dsa/matrix-ops-attention-sparse
 path_step: 26
 ---
 

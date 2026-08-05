@@ -16,8 +16,8 @@ prerequisites:
     to: /docs/trees-and-bst
   - title: Sorting Algorithms
     to: /docs/sorting-algorithms
-pagination_prev: 02-core-dsa/stacks-and-queues
-pagination_next: 02-core-dsa/trees-and-bst
+pagination_prev: core-dsa/stacks-and-queues
+pagination_next: core-dsa/trees-and-bst
 path_step: 12
 ---
 

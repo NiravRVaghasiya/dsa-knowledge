@@ -14,8 +14,8 @@ reading_time: 27
 prerequisites:
   - title: Trees & Binary Search Trees
     to: /docs/trees-and-bst
-pagination_prev: 03-advanced-dsa/segment-tree-fenwick
-pagination_next: 04-domain-specific-dsa/ann-search
+pagination_prev: advanced-dsa/segment-tree-fenwick
+pagination_next: domain-specific-dsa/ann-search
 path_step: 24
 ---
 

@@ -17,8 +17,8 @@ prerequisites:
     to: /docs/big-o-complexity
   - title: Python Internals & NumPy Memory
     to: /docs/python-internals-numpy-memory
-pagination_prev: 04-domain-specific-dsa/tokenization
-pagination_next: 04-domain-specific-dsa/beam-search
+pagination_prev: domain-specific-dsa/tokenization
+pagination_next: domain-specific-dsa/beam-search
 path_step: 27
 ---
 

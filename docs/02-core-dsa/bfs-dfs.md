@@ -19,8 +19,8 @@ prerequisites:
     to: /docs/stacks-and-queues
   - title: Recursion & The Call Stack
     to: /docs/recursion-and-call-stack
-pagination_prev: 02-core-dsa/trees-and-bst
-pagination_next: 02-core-dsa/hashing-patterns
+pagination_prev: core-dsa/trees-and-bst
+pagination_next: core-dsa/hashing-patterns
 path_step: 14
 ---
 

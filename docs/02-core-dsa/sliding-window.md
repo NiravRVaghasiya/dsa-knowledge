@@ -16,8 +16,8 @@ prerequisites:
     to: /docs/arrays-and-strings
   - title: Two Pointers
     to: /docs/two-pointers
-pagination_prev: 02-core-dsa/two-pointers
-pagination_next: 02-core-dsa/binary-search
+pagination_prev: core-dsa/two-pointers
+pagination_next: core-dsa/binary-search
 path_step: 8
 ---
 

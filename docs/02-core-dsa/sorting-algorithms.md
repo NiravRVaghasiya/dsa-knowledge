@@ -15,8 +15,8 @@ prerequisites:
     to: /docs/big-o-complexity
   - title: Recursion & The Call Stack
     to: /docs/recursion-and-call-stack
-pagination_prev: 02-core-dsa/binary-search
-pagination_next: 02-core-dsa/stacks-and-queues
+pagination_prev: core-dsa/binary-search
+pagination_next: core-dsa/stacks-and-queues
 path_step: 10
 ---
 

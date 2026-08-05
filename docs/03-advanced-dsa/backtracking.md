@@ -16,8 +16,8 @@ prerequisites:
     to: /docs/recursion-and-call-stack
   - title: BFS & DFS Traversal
     to: /docs/bfs-dfs
-pagination_prev: 02-core-dsa/hashing-patterns
-pagination_next: 03-advanced-dsa/dynamic-programming
+pagination_prev: core-dsa/hashing-patterns
+pagination_next: advanced-dsa/dynamic-programming
 path_step: 16
 ---
 

@@ -17,8 +17,8 @@ prerequisites:
     to: /docs/arrays-and-strings
   - title: Linked Lists
     to: /docs/linked-lists
-pagination_prev: 02-core-dsa/sorting-algorithms
-pagination_next: 02-core-dsa/heaps-and-priority-queues
+pagination_prev: core-dsa/sorting-algorithms
+pagination_next: core-dsa/heaps-and-priority-queues
 path_step: 11
 ---
 

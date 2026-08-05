@@ -15,8 +15,8 @@ reading_time: 24
 prerequisites:
   - title: Big-O Notation & Complexity Analysis
     to: /docs/big-o-complexity
-pagination_prev: 01-foundation/arrays-and-strings
-pagination_next: 01-foundation/linked-lists
+pagination_prev: foundation/arrays-and-strings
+pagination_next: foundation/linked-lists
 path_step: 3
 ---
 

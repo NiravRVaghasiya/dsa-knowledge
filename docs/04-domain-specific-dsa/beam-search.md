@@ -16,8 +16,8 @@ prerequisites:
     to: /docs/bfs-dfs
   - title: Heaps & Priority Queues
     to: /docs/heaps-and-priority-queues
-pagination_prev: 04-domain-specific-dsa/matrix-ops-attention-sparse
-pagination_next: 04-domain-specific-dsa/graph-algorithms-kg-graphrag
+pagination_prev: domain-specific-dsa/matrix-ops-attention-sparse
+pagination_next: domain-specific-dsa/graph-algorithms-kg-graphrag
 path_step: 28
 ---
 

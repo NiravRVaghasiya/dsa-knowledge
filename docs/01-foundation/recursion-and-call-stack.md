@@ -14,8 +14,8 @@ reading_time: 28
 prerequisites:
   - title: Big-O Notation & Complexity Analysis
     to: /docs/big-o-complexity
-pagination_prev: 01-foundation/linked-lists
-pagination_next: 01-foundation/python-internals-numpy-memory
+pagination_prev: foundation/linked-lists
+pagination_next: foundation/python-internals-numpy-memory
 path_step: 5
 ---
 

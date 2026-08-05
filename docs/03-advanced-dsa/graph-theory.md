@@ -13,8 +13,8 @@ reading_time: 24
 prerequisites:
   - title: BFS & DFS Traversal
     to: /docs/bfs-dfs
-pagination_prev: 03-advanced-dsa/dynamic-programming
-pagination_next: 03-advanced-dsa/shortest-path
+pagination_prev: advanced-dsa/dynamic-programming
+pagination_next: advanced-dsa/shortest-path
 path_step: 18
 ---
 

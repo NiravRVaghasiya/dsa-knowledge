@@ -14,8 +14,8 @@ reading_time: 21
 prerequisites:
   - title: Arrays & Strings
     to: /docs/arrays-and-strings
-pagination_prev: 01-foundation/hash-maps-and-sets
-pagination_next: 01-foundation/recursion-and-call-stack
+pagination_prev: foundation/hash-maps-and-sets
+pagination_next: foundation/recursion-and-call-stack
 path_step: 4
 ---
 
