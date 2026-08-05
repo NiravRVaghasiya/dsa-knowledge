@@ -28,6 +28,15 @@ function RunnerInner({code, height = 220, title}: PythonRunnerProps) {
       const py = pyRef.current;
       setStatus('running');
       setOutput('');
+      // Auto-load any bundled packages the code imports (numpy, etc.).
+      // Pyodide ships these but does not install them until requested.
+      try {
+        setOutput('Loading required packages…');
+        await py.loadPackagesFromImports(src);
+      } catch (_) {
+        // Non-fatal: a pure-Python program has no packages to load.
+      }
+      setOutput('');
       let buffer = '';
       py.setStdout({batched: (s: string) => (buffer += s + '\n')});
       py.setStderr({batched: (s: string) => (buffer += s + '\n')});
