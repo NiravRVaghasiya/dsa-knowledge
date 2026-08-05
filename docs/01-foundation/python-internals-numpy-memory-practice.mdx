@@ -1,0 +1,43 @@
+---
+title: Python Internals & NumPy Memory — Practice
+sidebar_label: 🎮 Python Internals (Practice)
+sidebar_position: 100
+description: Interactive practice for Python Internals & NumPy Memory — a live in-browser Python exercise.
+pagination_prev: 01-foundation/python-internals-numpy-memory
+pagination_next: null
+---
+
+# 🎮 Python Internals (Practice)
+
+Companion to the **[Python Internals & NumPy Memory guide](/docs/python-internals-numpy-memory)**. See how Python object identity and mutability actually behave. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Python Internals & NumPy Memory — Practice"
+  height={400}
+  code={`# Explore Python's object model: identity, interning, and aliasing.
+a = [1, 2, 3]
+b = a            # alias — same object
+c = a[:]         # shallow copy — new object
+b.append(4)
+print("a:", a, "| b is a:", b is a)   # b mutated a
+print("c:", c, "| c is a:", c is a)   # c untouched
+
+# Small-int caching
+x = 256; y = 256
+print("256 cached:", x is y)          # True
+x = 257; y = 257
+print("257 cached:", x is y)          # often False
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Show that `list *` on nested lists shares references (the classic gotcha).
+2. Use `sys.getsizeof` to compare a list vs a generator.
+3. Why does NumPy's contiguous memory make vectorized ops fast?
+
+---
+
+*Continue the learning path → [Recursion And Call Stack](/docs/recursion-and-call-stack)*

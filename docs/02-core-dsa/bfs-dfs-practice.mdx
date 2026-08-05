@@ -1,0 +1,55 @@
+---
+title: BFS & DFS
+sidebar_label: 🎮 BFS / DFS (Practice)
+sidebar_position: 100
+description: Interactive practice for BFS & DFS — animated walkthrough and a live Python exercise.
+pagination_prev: 02-core-dsa/bfs-dfs
+pagination_next: null
+---
+
+# 🎮 BFS / DFS (Practice)
+
+Companion to the **[BFS & DFS guide](/docs/bfs-dfs)**. Watch BFS explore a graph level by level, then implement it with a queue.
+
+## 🎬 Watch it work
+
+<AlgoViz
+  title="BFS — level-by-level exploration"
+  frames={[{"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "active"}, "caption": "Start BFS at node 1; enqueue it."}, {"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "active"}, "caption": "Dequeue & visit node 1"}, {"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "done", "1": "compare"}, "caption": "Discover neighbor 2 \u2192 enqueue"}, {"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "done", "1": "done", "2": "compare"}, "caption": "Discover neighbor 3 \u2192 enqueue"}, {"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "done", "1": "active", "2": "done"}, "caption": "Dequeue & visit node 2"}, {"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "done", "1": "done", "2": "done", "3": "compare"}, "caption": "Discover neighbor 4 \u2192 enqueue"}, {"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "done", "1": "done", "2": "done", "3": "done", "4": "compare"}, "caption": "Discover neighbor 5 \u2192 enqueue"}, {"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "done", "1": "done", "2": "active", "3": "done", "4": "done"}, "caption": "Dequeue & visit node 3"}, {"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "done", "1": "done", "2": "done", "3": "done", "4": "done", "5": "compare"}, "caption": "Discover neighbor 6 \u2192 enqueue"}, {"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "done", "1": "done", "2": "done", "3": "active", "4": "done", "5": "done"}, "caption": "Dequeue & visit node 4"}, {"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "done", "1": "done", "2": "done", "3": "done", "4": "active", "5": "done"}, "caption": "Dequeue & visit node 5"}, {"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "done", "1": "done", "2": "done", "3": "done", "4": "done", "5": "active"}, "caption": "Dequeue & visit node 6"}, {"array": [1, 2, 3, 4, 5, 6], "highlights": {"0": "done", "1": "done", "2": "done", "3": "done", "4": "done", "5": "done"}, "caption": "BFS complete \u2014 visited level by level."}]}
+/>
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 BFS & DFS — Practice"
+  height={380}
+  code={`from collections import deque
+
+# BFS traversal — return nodes in the order they are first visited.
+def bfs(graph, start):
+    seen = {start}
+    q = deque([start])
+    order = []
+    while q:
+        node = q.popleft()
+        order.append(node)
+        for nb in graph[node]:
+            if nb not in seen:
+                seen.add(nb)
+                q.append(nb)
+    return order
+
+g = {1: [2, 3], 2: [4, 5], 3: [6], 4: [], 5: [6], 6: []}
+print(bfs(g, 1))   # -> [1, 2, 3, 4, 5, 6]
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Rewrite it as **DFS** using a stack (or recursion).
+2. Modify BFS to return the **shortest-path distance** from start to every node.
+3. How would you detect a cycle during traversal?
+
+---
+
+*Continue the path → [Hashing Patterns](/docs/hashing-patterns)*

@@ -1,0 +1,54 @@
+---
+title: Linked Lists
+sidebar_label: 🎮 Linked Lists (Practice)
+sidebar_position: 100
+description: Interactive practice for Linked Lists — animated walkthrough and a live Python exercise.
+pagination_prev: 01-foundation/linked-lists
+pagination_next: null
+---
+
+# 🎮 Linked Lists (Practice)
+
+Companion to the **[Linked Lists guide](/docs/linked-lists)**. Watch a list reverse pointer by pointer, then code the classic three-pointer reversal.
+
+## 🎬 Watch it work
+
+<AlgoViz
+  title="Reverse a Linked List — re-point next"
+  frames={[{"array": [1, 2, 3, 4, 5], "caption": "Reverse a linked list by re-pointing each next backward."}, {"array": [1, 2, 3, 4, 5], "highlights": {"4": "done", "3": "active"}, "caption": "Reversed 1 node(s): tail now points backward"}, {"array": [1, 2, 3, 4, 5], "highlights": {"4": "done", "3": "done", "2": "active"}, "caption": "Reversed 2 node(s): tail now points backward"}, {"array": [1, 2, 3, 4, 5], "highlights": {"4": "done", "3": "done", "2": "done", "1": "active"}, "caption": "Reversed 3 node(s): tail now points backward"}, {"array": [1, 2, 3, 4, 5], "highlights": {"4": "done", "3": "done", "2": "done", "1": "done", "0": "active"}, "caption": "Reversed 4 node(s): tail now points backward"}, {"array": [1, 2, 3, 4, 5], "highlights": {"4": "done", "3": "done", "2": "done", "1": "done", "0": "done"}, "caption": "Reversed 5 node(s): tail now points backward"}, {"array": [5, 4, 3, 2, 1], "highlights": {"0": "done", "1": "done", "2": "done", "3": "done", "4": "done"}, "caption": "Fully reversed \u2713 (O(n) time, O(1) space)"}]}
+/>
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Linked Lists — Practice"
+  height={380}
+  code={`# Reverse a singly linked list. Node = {"v": value, "next": node_or_None}.
+def reverse(head):
+    prev = None
+    while head:
+        nxt = head["next"]   # save next
+        head["next"] = prev  # re-point backward
+        prev = head          # advance prev
+        head = nxt           # advance head
+    return prev              # new head
+
+# build 1->2->3, reverse, print
+head = {"v": 1, "next": {"v": 2, "next": {"v": 3, "next": None}}}
+r = reverse(head)
+out = []
+while r:
+    out.append(r["v"]); r = r["next"]
+print(out)   # -> [3, 2, 1]
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Detect a cycle using Floyd's fast/slow pointers.
+2. Find the middle node in one pass.
+3. Reverse only the first k nodes.
+
+---
+
+*Continue the path → [Recursion & The Call Stack](/docs/recursion-and-call-stack)*

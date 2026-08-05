@@ -1,0 +1,41 @@
+---
+title: Hash Maps & Sets — Practice
+sidebar_label: 🎮 Hash Maps (Practice)
+sidebar_position: 100
+description: Interactive practice for Hash Maps & Sets — a live in-browser Python exercise.
+pagination_prev: 01-foundation/hash-maps-and-sets
+pagination_next: null
+---
+
+# 🎮 Hash Maps (Practice)
+
+Companion to the **[Hash Maps & Sets guide](/docs/hash-maps-and-sets)**. Use a hash map to turn an O(n²) scan into a single O(n) pass. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Hash Maps & Sets — Practice"
+  height={400}
+  code={`# Two Sum (unsorted) in O(n) using a hash map of value -> index.
+def two_sum(nums, target):
+    seen = {}
+    for i, x in enumerate(nums):
+        if target - x in seen:
+            return [seen[target - x], i]
+        seen[x] = i
+    return []
+
+print(two_sum([2, 7, 11, 15], 9))   # -> [0, 1]
+print(two_sum([3, 2, 4], 6))        # -> [1, 2]
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Group a list of words into anagrams using a hash map.
+2. Find the first non-repeating character in a string.
+3. Why is average lookup O(1) but worst case O(n)?
+
+---
+
+*Continue the learning path → [Linked Lists](/docs/linked-lists)*

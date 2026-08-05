@@ -1,0 +1,54 @@
+---
+title: Heaps & Priority Queues
+sidebar_label: 🎮 Heaps (Practice)
+sidebar_position: 100
+description: Interactive practice for Heaps & Priority Queues — animated walkthrough and a live Python exercise.
+pagination_prev: 02-core-dsa/heaps-and-priority-queues
+pagination_next: null
+---
+
+# 🎮 Heaps (Practice)
+
+Companion to the **[Heaps & Priority Queues guide](/docs/heaps-and-priority-queues)**. Watch a min-heap build by sifting each new value up, then use heapq for top-K.
+
+## 🎬 Watch it work
+
+<AlgoViz
+  title="Min-Heap Insert — sift up"
+  frames={[{"array": [7], "highlights": {"0": "active"}, "caption": "Insert 7 at index 0"}, {"array": [7, 4], "highlights": {"1": "active"}, "caption": "Insert 4 at index 1"}, {"array": [7, 4], "highlights": {"1": "compare", "0": "compare"}, "caption": "Compare 4 with parent 7"}, {"array": [4, 7], "highlights": {"0": "active"}, "caption": "Child < parent \u2192 sift up"}, {"array": [4, 7, 9], "highlights": {"2": "active"}, "caption": "Insert 9 at index 2"}, {"array": [4, 7, 9], "highlights": {"2": "compare", "0": "compare"}, "caption": "Compare 9 with parent 4"}, {"array": [4, 7, 9], "highlights": {"2": "done"}, "caption": "Heap property holds \u2014 stop"}, {"array": [4, 7, 9, 2], "highlights": {"3": "active"}, "caption": "Insert 2 at index 3"}, {"array": [4, 7, 9, 2], "highlights": {"3": "compare", "1": "compare"}, "caption": "Compare 2 with parent 7"}, {"array": [4, 2, 9, 7], "highlights": {"1": "active"}, "caption": "Child < parent \u2192 sift up"}, {"array": [4, 2, 9, 7], "highlights": {"1": "compare", "0": "compare"}, "caption": "Compare 2 with parent 4"}, {"array": [2, 4, 9, 7], "highlights": {"0": "active"}, "caption": "Child < parent \u2192 sift up"}, {"array": [2, 4, 9, 7, 6], "highlights": {"4": "active"}, "caption": "Insert 6 at index 4"}, {"array": [2, 4, 9, 7, 6], "highlights": {"4": "compare", "1": "compare"}, "caption": "Compare 6 with parent 4"}, {"array": [2, 4, 9, 7, 6], "highlights": {"4": "done"}, "caption": "Heap property holds \u2014 stop"}, {"array": [2, 4, 9, 7, 6, 1], "highlights": {"5": "active"}, "caption": "Insert 1 at index 5"}, {"array": [2, 4, 9, 7, 6, 1], "highlights": {"5": "compare", "2": "compare"}, "caption": "Compare 1 with parent 9"}, {"array": [2, 4, 1, 7, 6, 9], "highlights": {"2": "active"}, "caption": "Child < parent \u2192 sift up"}, {"array": [2, 4, 1, 7, 6, 9], "highlights": {"2": "compare", "0": "compare"}, "caption": "Compare 1 with parent 2"}, {"array": [1, 4, 2, 7, 6, 9], "highlights": {"0": "active"}, "caption": "Child < parent \u2192 sift up"}, {"array": [1, 4, 2, 7, 6, 9], "highlights": {"0": "done", "1": "done", "2": "done", "3": "done", "4": "done", "5": "done"}, "caption": "Min-heap built \u2713 root = minimum"}]}
+/>
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Heaps & Priority Queues — Practice"
+  height={380}
+  code={`import heapq
+
+# Use a heap to find the k smallest elements in O(n log k).
+def k_smallest(nums, k):
+    return heapq.nsmallest(k, nums)
+
+# ...and a running "k largest" with a min-heap of size k:
+def k_largest(nums, k):
+    h = []
+    for x in nums:
+        heapq.heappush(h, x)
+        if len(h) > k:
+            heapq.heappop(h)      # evict smallest -> keeps k largest
+    return sorted(h, reverse=True)
+
+print(k_smallest([5, 2, 8, 1, 4, 9], 3))  # -> [1, 2, 4]
+print(k_largest([5, 2, 8, 1, 4, 9], 3))   # -> [9, 8, 5]
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Build a **max-heap** using the negate trick.
+2. Implement a streaming median with two heaps.
+3. Why is `heapify` O(n) but k pushes O(n log n)?
+
+---
+
+*Continue the path → [Trees & BST](/docs/trees-and-bst)*

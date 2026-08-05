@@ -1,0 +1,50 @@
+---
+title: Trees & BST
+sidebar_label: 🎮 Trees & BST (Practice)
+sidebar_position: 100
+description: Interactive practice for Trees & BST — animated walkthrough and a live Python exercise.
+pagination_prev: 02-core-dsa/trees-and-bst
+pagination_next: null
+---
+
+# 🎮 Trees & BST (Practice)
+
+Companion to the **[Trees & BST guide](/docs/trees-and-bst)**. Watch an in-order traversal emit BST values in sorted order, then code it.
+
+## 🎬 Watch it work
+
+<AlgoViz
+  title="In-order Traversal — Left, Root, Right"
+  frames={[{"array": [5, 3, 8, 2, 4, 7, 9], "caption": "BST in level-order. In-order = Left \u2192 Root \u2192 Right \u2192 sorted output."}, {"array": [5, 3, 8, 2, 4, 7, 9], "highlights": {"3": "active"}, "caption": "Visit 2 (position 1)"}, {"array": [5, 3, 8, 2, 4, 7, 9], "highlights": {"3": "done", "1": "active"}, "caption": "Visit 3 (position 2)"}, {"array": [5, 3, 8, 2, 4, 7, 9], "highlights": {"3": "done", "1": "done", "4": "active"}, "caption": "Visit 4 (position 3)"}, {"array": [5, 3, 8, 2, 4, 7, 9], "highlights": {"3": "done", "1": "done", "4": "done", "0": "active"}, "caption": "Visit 5 (position 4)"}, {"array": [5, 3, 8, 2, 4, 7, 9], "highlights": {"3": "done", "1": "done", "4": "done", "0": "done", "5": "active"}, "caption": "Visit 7 (position 5)"}, {"array": [5, 3, 8, 2, 4, 7, 9], "highlights": {"3": "done", "1": "done", "4": "done", "0": "done", "5": "done", "2": "active"}, "caption": "Visit 8 (position 6)"}, {"array": [5, 3, 8, 2, 4, 7, 9], "highlights": {"3": "done", "1": "done", "4": "done", "0": "done", "5": "done", "2": "done", "6": "active"}, "caption": "Visit 9 (position 7)"}, {"array": [5, 3, 8, 2, 4, 7, 9], "highlights": {"3": "done", "1": "done", "4": "done", "0": "done", "5": "done", "2": "done", "6": "done"}, "caption": "In-order \u2192 values sorted \u2713"}]}
+/>
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Trees & BST — Practice"
+  height={380}
+  code={`# In-order traversal of a binary tree. Returns values Left -> Root -> Right.
+# A node is a dict: {"v": value, "l": left_or_None, "r": right_or_None}
+def inorder(node):
+    if node is None:
+        return []
+    return inorder(node["l"]) + [node["v"]] + inorder(node["r"])
+
+tree = {"v": 5,
+        "l": {"v": 3, "l": {"v": 2, "l": None, "r": None},
+                       "r": {"v": 4, "l": None, "r": None}},
+        "r": {"v": 8, "l": {"v": 7, "l": None, "r": None},
+                       "r": {"v": 9, "l": None, "r": None}}}
+print(inorder(tree))   # -> [2, 3, 4, 5, 7, 8, 9]  (sorted, because it is a BST)
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Write **pre-order** and **post-order** versions.
+2. Add an iterative in-order using an explicit stack.
+3. Given the sorted output, how would you verify the tree is a valid BST?
+
+---
+
+*Continue the path → [BFS & DFS](/docs/bfs-dfs)*

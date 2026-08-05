@@ -1,0 +1,53 @@
+---
+title: Segment Tree & Fenwick Tree — Practice
+sidebar_label: 🎮 Segment/Fenwick (Practice)
+sidebar_position: 100
+description: Interactive practice for Segment Tree & Fenwick Tree — a live in-browser Python exercise.
+pagination_prev: 03-advanced-dsa/segment-tree-fenwick
+pagination_next: null
+---
+
+# 🎮 Segment/Fenwick (Practice)
+
+Companion to the **[Segment Tree & Fenwick Tree guide](/docs/segment-tree-fenwick)**. Build a Fenwick tree (BIT) for O(log n) prefix sums with updates. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Segment Tree & Fenwick Tree — Practice"
+  height={400}
+  code={`# Fenwick Tree (Binary Indexed Tree): point update, prefix-sum query.
+class Fenwick:
+    def __init__(self, n):
+        self.n = n
+        self.tree = [0] * (n + 1)
+    def update(self, i, delta):      # 1-indexed
+        while i <= self.n:
+            self.tree[i] += delta
+            i += i & (-i)
+    def query(self, i):              # prefix sum [1..i]
+        s = 0
+        while i > 0:
+            s += self.tree[i]
+            i -= i & (-i)
+        return s
+
+f = Fenwick(6)
+for idx, val in enumerate([3,2,5,1,4,6], start=1):
+    f.update(idx, val)
+print(f.query(6))          # -> 21 (total)
+print(f.query(3))          # -> 10 (3+2+5)
+f.update(2, 10)            # add 10 at position 2
+print(f.query(3))          # -> 20
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Add a range-sum query(l, r) using two prefix queries.
+2. What does `i & (-i)` compute, and why?
+3. When is a segment tree preferable to a Fenwick tree?
+
+---
+
+*Continue the learning path → [Backtracking](/docs/backtracking)*

@@ -1,0 +1,10 @@
+{
+  "label": "\ud83d\ude80 Advanced DSA",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "title": "Advanced DSA",
+    "description": "Higher-order algorithmic techniques and specialized structures for optimization, graphs, and range queries.",
+    "slug": "/category/03-advanced-dsa"
+  }
+}

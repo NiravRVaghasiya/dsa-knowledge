@@ -1,0 +1,10 @@
+{
+  "label": "\u2699\ufe0f Core DSA",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "title": "Core DSA",
+    "description": "The bread-and-butter patterns and structures behind the majority of interview questions and production code.",
+    "slug": "/category/02-core-dsa"
+  }
+}

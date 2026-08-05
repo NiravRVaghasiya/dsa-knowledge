@@ -1,0 +1,10 @@
+{
+  "label": "\ud83e\udd16 Domain-Specific DSA",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "title": "Domain-Specific DSA",
+    "description": "Where classical DSA meets modern AI/ML/LLM systems \u2014 vector search, tokenization, attention, agents, and GraphRAG.",
+    "slug": "/category/04-domain-specific-dsa"
+  }
+}

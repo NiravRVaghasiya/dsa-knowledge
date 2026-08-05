@@ -1,0 +1,52 @@
+---
+title: Binary Search
+sidebar_label: 🎮 Binary Search (Practice)
+sidebar_position: 100
+description: Interactive practice for Binary Search — animated walkthrough and a live Python exercise.
+pagination_prev: 02-core-dsa/binary-search
+pagination_next: null
+---
+
+# 🎮 Binary Search (Practice)
+
+Companion to the **[Binary Search guide](/docs/binary-search)**. See the search space halve each step, then write the classic loop.
+
+## 🎬 Watch it work
+
+<AlgoViz
+  title="Binary Search — halving the search space"
+  frames={[{"array": [1, 3, 5, 7, 9, 11, 13, 15], "pointers": {"lo": 0, "hi": 7}, "caption": "Search for 11 in a sorted array \u2014 O(log n)."}, {"array": [1, 3, 5, 7, 9, 11, 13, 15], "pointers": {"lo": 0, "mid": 3, "hi": 7}, "highlights": {"3": "compare"}, "caption": "Check mid = a[3] = 7"}, {"array": [1, 3, 5, 7, 9, 11, 13, 15], "pointers": {"lo": 4, "hi": 7}, "caption": "7 < 11 \u2192 discard left half"}, {"array": [1, 3, 5, 7, 9, 11, 13, 15], "pointers": {"lo": 4, "mid": 5, "hi": 7}, "highlights": {"5": "compare"}, "caption": "Check mid = a[5] = 11"}, {"array": [1, 3, 5, 7, 9, 11, 13, 15], "pointers": {"mid": 5}, "highlights": {"5": "done"}, "caption": "a[5] = 11 \u2713 Found"}]}
+/>
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Binary Search — Practice"
+  height={380}
+  code={`# Classic iterative binary search. Return the index of target, or -1.
+def binary_search(a, target):
+    lo, hi = 0, len(a) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if a[mid] == target:
+            return mid
+        elif a[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return -1
+
+print(binary_search([1,3,5,7,9,11,13,15], 11))  # -> 5
+print(binary_search([1,3,5,7,9,11,13,15], 4))   # -> -1
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Return the **insertion point** for a missing target (where it *would* go).
+2. Implement `lower_bound` (first index with a[i] >= target).
+3. Why is `mid = lo + (hi-lo)//2` sometimes preferred over `(lo+hi)//2`?
+
+---
+
+*Continue the path → [Sorting Algorithms](/docs/sorting-algorithms)*

@@ -1,0 +1,47 @@
+---
+title: Beam Search & Constrained Decoding — Practice
+sidebar_label: 🎮 Beam Search (Practice)
+sidebar_position: 100
+description: Interactive practice for Beam Search & Constrained Decoding — a live in-browser Python exercise.
+pagination_prev: 04-domain-specific-dsa/beam-search
+pagination_next: null
+---
+
+# 🎮 Beam Search (Practice)
+
+Companion to the **[Beam Search & Constrained Decoding guide](/docs/beam-search)**. Implement beam search over a toy probability tree. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Beam Search & Constrained Decoding — Practice"
+  height={400}
+  code={`# Beam search: keep the top-b partial sequences by cumulative log-prob.
+import math
+def beam_search(step_probs, beam=2):
+    # step_probs[t] = dict(token -> prob) at step t (independent toy model)
+    beams = [([], 0.0)]   # (sequence, logprob)
+    for probs in step_probs:
+        cand = []
+        for seq, lp in beams:
+            for tok, p in probs.items():
+                cand.append((seq + [tok], lp + math.log(p)))
+        cand.sort(key=lambda x: x[1], reverse=True)
+        beams = cand[:beam]
+    return beams[0]
+
+steps = [{"a":0.6,"b":0.4}, {"x":0.7,"y":0.3}, {"m":0.9,"n":0.1}]
+seq, lp = beam_search(steps, beam=2)
+print(seq, round(lp, 3))   # -> ['a','x','m'] (highest-prob path)
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Compare beam=1 (greedy) vs beam=3 outputs.
+2. Add a length penalty so long sequences aren't unfairly punished.
+3. How does constrained decoding prune invalid tokens?
+
+---
+
+*Continue the learning path → [Graph Algorithms Kg Graphrag](/docs/graph-algorithms-kg-graphrag)*

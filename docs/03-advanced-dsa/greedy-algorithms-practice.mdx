@@ -1,0 +1,42 @@
+---
+title: Greedy Algorithms — Practice
+sidebar_label: 🎮 Greedy (Practice)
+sidebar_position: 100
+description: Interactive practice for Greedy Algorithms — a live in-browser Python exercise.
+pagination_prev: 03-advanced-dsa/greedy-algorithms
+pagination_next: null
+---
+
+# 🎮 Greedy (Practice)
+
+Companion to the **[Greedy Algorithms guide](/docs/greedy-algorithms)**. Interval scheduling: greedily pick the most non-overlapping meetings. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Greedy Algorithms — Practice"
+  height={400}
+  code={`# Maximum non-overlapping intervals — greedy by earliest finish time.
+def max_meetings(intervals):
+    intervals.sort(key=lambda x: x[1])   # sort by end time
+    count = 0
+    last_end = float("-inf")
+    for s, e in intervals:
+        if s >= last_end:
+            count += 1
+            last_end = e
+    return count
+
+print(max_meetings([(1,4),(2,3),(3,5),(0,6),(5,7),(8,9)]))   # -> 4
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Return which meetings were chosen, not just the count.
+2. Minimum number of rooms to host all meetings.
+3. Prove why 'earliest finish' is optimal (exchange argument).
+
+---
+
+*Continue the learning path → [Tries](/docs/tries)*

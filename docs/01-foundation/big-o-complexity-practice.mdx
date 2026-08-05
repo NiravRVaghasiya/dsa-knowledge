@@ -1,0 +1,47 @@
+---
+title: Big-O & Complexity — Practice
+sidebar_label: 🎮 Big-O (Practice)
+sidebar_position: 100
+description: Interactive practice for Big-O & Complexity — a live in-browser Python exercise.
+pagination_prev: 01-foundation/big-o-complexity
+pagination_next: null
+---
+
+# 🎮 Big-O (Practice)
+
+Companion to the **[Big-O & Complexity guide](/docs/big-o-complexity)**. Measure how runtime actually scales — theory meets the stopwatch. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Big-O & Complexity — Practice"
+  height={400}
+  code={`# Empirically observe O(n) vs O(n^2) growth.
+import time
+
+def linear(n):
+    return sum(range(n))              # O(n)
+
+def quadratic(n):
+    c = 0
+    for i in range(n):
+        for j in range(n):           # O(n^2)
+            c += 1
+    return c
+
+for n in [100, 200, 400]:
+    t = time.time(); quadratic(n); dt = time.time() - t
+    print(f"n={n}: quadratic took {dt:.4f}s")
+print("Doubling n ~4x's the O(n^2) time.")
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Time `linear` for growing n — does doubling n double the time?
+2. Add an O(n log n) function (e.g. sorting) and compare.
+3. Why do constants and lower-order terms drop out of Big-O?
+
+---
+
+*Continue the learning path → [Arrays And Strings](/docs/arrays-and-strings)*

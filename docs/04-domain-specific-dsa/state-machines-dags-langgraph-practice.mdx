@@ -1,0 +1,49 @@
+---
+title: State Machines & DAGs for Agents — Practice
+sidebar_label: 🎮 Agent DAGs (Practice)
+sidebar_position: 100
+description: Interactive practice for State Machines & DAGs for Agents — a live in-browser Python exercise.
+pagination_prev: 04-domain-specific-dsa/state-machines-dags-langgraph
+pagination_next: null
+---
+
+# 🎮 Agent DAGs (Practice)
+
+Companion to the **[State Machines & DAGs for Agents guide](/docs/state-machines-dags-langgraph)**. Topologically order agent nodes in a DAG — how LangGraph schedules execution. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 State Machines & DAGs for Agents — Practice"
+  height={400}
+  code={`from collections import deque
+# Topological sort of an agent DAG (Kahn's algorithm).
+def topo_sort(graph):
+    indeg = {u: 0 for u in graph}
+    for u in graph:
+        for v in graph[u]:
+            indeg[v] += 1
+    q = deque([u for u in graph if indeg[u] == 0])
+    order = []
+    while q:
+        u = q.popleft(); order.append(u)
+        for v in graph[u]:
+            indeg[v] -= 1
+            if indeg[v] == 0:
+                q.append(v)
+    return order if len(order) == len(graph) else None   # None if cycle
+
+dag = {"ingest":["embed"], "embed":["retrieve"], "retrieve":["generate"], "generate":[]}
+print(topo_sort(dag))   # -> ['ingest','embed','retrieve','generate']
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. What does topo_sort return if you add a cycle?
+2. Allow parallel execution: group nodes by dependency 'level'.
+3. Why must an agent workflow graph be a DAG (no cycles)?
+
+---
+
+*Continue the learning path → [Streaming Caching](/docs/streaming-caching)*

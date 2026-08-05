@@ -1,0 +1,43 @@
+---
+title: Recursion & The Call Stack — Practice
+sidebar_label: 🎮 Recursion (Practice)
+sidebar_position: 100
+description: Interactive practice for Recursion & The Call Stack — a live in-browser Python exercise.
+pagination_prev: 01-foundation/recursion-and-call-stack
+pagination_next: null
+---
+
+# 🎮 Recursion (Practice)
+
+Companion to the **[Recursion & The Call Stack guide](/docs/recursion-and-call-stack)**. Practice recursion and see memoization collapse exponential work. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Recursion & The Call Stack — Practice"
+  height={400}
+  code={`# Fibonacci: naive recursion vs memoized — watch the call count.
+calls = 0
+def fib_naive(n):
+    global calls; calls += 1
+    return n if n < 2 else fib_naive(n-1) + fib_naive(n-2)
+
+from functools import lru_cache
+@lru_cache(None)
+def fib_fast(n):
+    return n if n < 2 else fib_fast(n-1) + fib_fast(n-2)
+
+print("fib_naive(20) =", fib_naive(20), "in", calls, "calls")
+print("fib_fast(20)  =", fib_fast(20), "(linear calls)")
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Count calls for fib_fast — why is it O(n)?
+2. Write recursive factorial, then convert to iterative.
+3. What causes a RecursionError, and how does tail-call style help?
+
+---
+
+*Continue the learning path → [Python Internals Numpy Memory](/docs/python-internals-numpy-memory)*

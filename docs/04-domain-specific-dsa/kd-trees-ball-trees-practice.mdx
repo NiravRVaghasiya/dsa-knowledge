@@ -1,0 +1,42 @@
+---
+title: KD-Trees & Ball-Trees — Practice
+sidebar_label: 🎮 KD-Trees (Practice)
+sidebar_position: 100
+description: Interactive practice for KD-Trees & Ball-Trees — a live in-browser Python exercise.
+pagination_prev: 04-domain-specific-dsa/kd-trees-ball-trees
+pagination_next: null
+---
+
+# 🎮 KD-Trees (Practice)
+
+Companion to the **[KD-Trees & Ball-Trees guide](/docs/kd-trees-ball-trees)**. Use scikit-learn-style nearest neighbor via a simple KD-tree idea. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 KD-Trees & Ball-Trees — Practice"
+  height={400}
+  code={`# Nearest neighbor by brute force vs. a KD-tree (via scipy if available).
+import math
+def nearest(points, query):
+    best, bd = None, float("inf")
+    for p in points:
+        d = math.dist(p, query)
+        if d < bd:
+            bd, best = d, p
+    return best, round(bd, 3)
+
+pts = [(1,2),(3,4),(5,1),(0,0),(4,4)]
+print(nearest(pts, (4, 3)))   # -> ((4,4), 1.0)
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Return the k nearest neighbors, not just the closest.
+2. Why does a KD-tree degrade to brute force in high dimensions?
+3. How does this connect to ANN search for embeddings?
+
+---
+
+*Continue the learning path → [Ann Search](/docs/ann-search)*

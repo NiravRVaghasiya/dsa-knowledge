@@ -1,0 +1,50 @@
+---
+title: Tokenization Algorithms — Practice
+sidebar_label: 🎮 Tokenization (Practice)
+sidebar_position: 100
+description: Interactive practice for Tokenization Algorithms — a live in-browser Python exercise.
+pagination_prev: 04-domain-specific-dsa/tokenization
+pagination_next: null
+---
+
+# 🎮 Tokenization (Practice)
+
+Companion to the **[Tokenization Algorithms guide](/docs/tokenization)**. Implement a mini Byte-Pair Encoding (BPE) merge step. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Tokenization Algorithms — Practice"
+  height={400}
+  code={`# One BPE merge step: find the most frequent adjacent pair and merge it.
+from collections import Counter
+def most_frequent_pair(tokens):
+    pairs = Counter(zip(tokens, tokens[1:]))
+    return pairs.most_common(1)[0][0] if pairs else None
+
+def merge(tokens, pair):
+    out, i = [], 0
+    while i < len(tokens):
+        if i < len(tokens)-1 and (tokens[i], tokens[i+1]) == pair:
+            out.append(tokens[i] + tokens[i+1]); i += 2
+        else:
+            out.append(tokens[i]); i += 1
+    return out
+
+toks = list("low low low lower")
+for _ in range(3):
+    p = most_frequent_pair(toks)
+    toks = merge(toks, p)
+print(toks)
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Run merges until vocab reaches a target size.
+2. How does WordPiece's scoring differ from raw frequency?
+3. Why do subword tokenizers handle rare words better than word-level?
+
+---
+
+*Continue the learning path → [Matrix Ops Attention Sparse](/docs/matrix-ops-attention-sparse)*

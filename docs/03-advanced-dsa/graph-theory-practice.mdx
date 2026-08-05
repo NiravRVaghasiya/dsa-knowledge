@@ -1,0 +1,47 @@
+---
+title: Graph Theory — Practice
+sidebar_label: 🎮 Graph Theory (Practice)
+sidebar_position: 100
+description: Interactive practice for Graph Theory — a live in-browser Python exercise.
+pagination_prev: 03-advanced-dsa/graph-theory
+pagination_next: null
+---
+
+# 🎮 Graph Theory (Practice)
+
+Companion to the **[Graph Theory guide](/docs/graph-theory)**. Build an adjacency list and detect a cycle in a directed graph. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Graph Theory — Practice"
+  height={400}
+  code={`# Detect a cycle in a directed graph via DFS colors.
+def has_cycle(graph):
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color = {u: WHITE for u in graph}
+    def dfs(u):
+        color[u] = GRAY
+        for v in graph[u]:
+            if color[v] == GRAY:      # back-edge -> cycle
+                return True
+            if color[v] == WHITE and dfs(v):
+                return True
+        color[u] = BLACK
+        return False
+    return any(color[u] == 0 and dfs(u) for u in graph)
+
+print(has_cycle({1:[2], 2:[3], 3:[1]}))   # -> True
+print(has_cycle({1:[2], 2:[3], 3:[]}))    # -> False
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Return a topological order when there is no cycle.
+2. Count connected components in an undirected graph.
+3. Adjacency list vs matrix — when is each better?
+
+---
+
+*Continue the learning path → [Shortest Path](/docs/shortest-path)*

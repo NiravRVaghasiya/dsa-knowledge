@@ -1,0 +1,49 @@
+---
+title: Dynamic Programming
+sidebar_label: 🎮 Dynamic Programming (Practice)
+sidebar_position: 100
+description: Interactive practice for Dynamic Programming — animated walkthrough and a live Python exercise.
+pagination_prev: 03-advanced-dsa/dynamic-programming
+pagination_next: null
+---
+
+# 🎮 Dynamic Programming (Practice)
+
+Companion to the **[Dynamic Programming guide](/docs/dynamic-programming)**. Watch the DP table fill bottom-up for coin change, then implement it.
+
+## 🎬 Watch it work
+
+<AlgoViz
+  title="Coin Change — dp[a] = fewest coins for amount a"
+  frames={[{"array": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "highlights": {"0": "done"}, "caption": "dp[a] = min coins to make amount a. dp[0]=0."}, {"array": [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "highlights": {"1": "active"}, "caption": "amount 1: fewest coins = 1"}, {"array": [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], "highlights": {"2": "active"}, "caption": "amount 2: fewest coins = 1"}, {"array": [0, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0], "highlights": {"3": "active"}, "caption": "amount 3: fewest coins = 2"}, {"array": [0, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0], "highlights": {"4": "active"}, "caption": "amount 4: fewest coins = 2"}, {"array": [0, 1, 1, 2, 2, 1, 0, 0, 0, 0, 0, 0], "highlights": {"5": "active"}, "caption": "amount 5: fewest coins = 1"}, {"array": [0, 1, 1, 2, 2, 1, 2, 0, 0, 0, 0, 0], "highlights": {"6": "active"}, "caption": "amount 6: fewest coins = 2"}, {"array": [0, 1, 1, 2, 2, 1, 2, 2, 0, 0, 0, 0], "highlights": {"7": "active"}, "caption": "amount 7: fewest coins = 2"}, {"array": [0, 1, 1, 2, 2, 1, 2, 2, 3, 0, 0, 0], "highlights": {"8": "active"}, "caption": "amount 8: fewest coins = 3"}, {"array": [0, 1, 1, 2, 2, 1, 2, 2, 3, 3, 0, 0], "highlights": {"9": "active"}, "caption": "amount 9: fewest coins = 3"}, {"array": [0, 1, 1, 2, 2, 1, 2, 2, 3, 3, 2, 0], "highlights": {"10": "active"}, "caption": "amount 10: fewest coins = 2"}, {"array": [0, 1, 1, 2, 2, 1, 2, 2, 3, 3, 2, 3], "highlights": {"11": "active"}, "caption": "amount 11: fewest coins = 3"}, {"array": [0, 1, 1, 2, 2, 1, 2, 2, 3, 3, 2, 3], "highlights": {"11": "done"}, "caption": "Answer dp[11] = 3 coins \u2713"}]}
+/>
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Dynamic Programming — Practice"
+  height={380}
+  code={`# Coin Change (min coins) — bottom-up DP. Return -1 if impossible.
+def coin_change(coins, amount):
+    INF = float("inf")
+    dp = [0] + [INF] * amount        # dp[a] = fewest coins to make a
+    for a in range(1, amount + 1):
+        for c in coins:
+            if c <= a:
+                dp[a] = min(dp[a], dp[a - c] + 1)
+    return dp[amount] if dp[amount] != INF else -1
+
+print(coin_change([1, 2, 5], 11))   # -> 3  (5 + 5 + 1)
+print(coin_change([2], 3))          # -> -1
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Return the **actual coins** used, not just the count.
+2. Count the **number of ways** to make the amount (combinations).
+3. Turn the 0/1 knapsack into a similar table — what changes?
+
+---
+
+*Continue the path → [Graph Theory](/docs/graph-theory)*

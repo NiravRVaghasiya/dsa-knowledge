@@ -1,0 +1,40 @@
+---
+title: Arrays & Strings — Practice
+sidebar_label: 🎮 Arrays & Strings (Practice)
+sidebar_position: 100
+description: Interactive practice for Arrays & Strings — a live in-browser Python exercise.
+pagination_prev: 01-foundation/arrays-and-strings
+pagination_next: null
+---
+
+# 🎮 Arrays & Strings (Practice)
+
+Companion to the **[Arrays & Strings guide](/docs/arrays-and-strings)**. Practice in-place array manipulation — a core interview skill. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Arrays & Strings — Practice"
+  height={400}
+  code={`# Rotate an array to the right by k steps, in-place, O(1) extra space.
+def rotate(nums, k):
+    n = len(nums)
+    k %= n
+    nums[:] = nums[::-1]          # reverse all
+    nums[:k] = nums[:k][::-1]     # reverse first k
+    nums[k:] = nums[k:][::-1]     # reverse the rest
+    return nums
+
+print(rotate([1,2,3,4,5,6,7], 3))   # -> [5,6,7,1,2,3,4]
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Do it with slicing in one line — then explain why the reverse trick is O(1) space.
+2. Move all zeros to the end while keeping order of non-zeros.
+3. Find the longest common prefix of a list of strings.
+
+---
+
+*Continue the learning path → [Big O Complexity](/docs/big-o-complexity)*

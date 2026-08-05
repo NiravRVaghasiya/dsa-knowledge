@@ -1,0 +1,48 @@
+---
+title: Shortest Path Algorithms — Practice
+sidebar_label: 🎮 Shortest Path (Practice)
+sidebar_position: 100
+description: Interactive practice for Shortest Path Algorithms — a live in-browser Python exercise.
+pagination_prev: 03-advanced-dsa/shortest-path
+pagination_next: null
+---
+
+# 🎮 Shortest Path (Practice)
+
+Companion to the **[Shortest Path Algorithms guide](/docs/shortest-path)**. Implement Dijkstra with a min-heap on a weighted graph. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Shortest Path Algorithms — Practice"
+  height={400}
+  code={`import heapq
+# Dijkstra: shortest distances from source in a weighted graph (non-negative).
+def dijkstra(graph, src):
+    dist = {u: float("inf") for u in graph}
+    dist[src] = 0
+    pq = [(0, src)]
+    while pq:
+        d, u = heapq.heappop(pq)
+        if d > dist[u]:
+            continue
+        for v, w in graph[u]:
+            if d + w < dist[v]:
+                dist[v] = d + w
+                heapq.heappush(pq, (dist[v], v))
+    return dist
+
+g = {"A":[("B",1),("C",4)], "B":[("C",2),("D",5)], "C":[("D",1)], "D":[]}
+print(dijkstra(g, "A"))   # -> {'A':0,'B':1,'C':3,'D':4}
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Reconstruct the actual path, not just distances.
+2. Why does Dijkstra fail with negative edges? (try Bellman-Ford)
+3. Add a heuristic to turn this into A*.
+
+---
+
+*Continue the learning path → [Union Find](/docs/union-find)*

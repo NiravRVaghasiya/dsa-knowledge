@@ -1,0 +1,51 @@
+---
+title: Stacks & Queues
+sidebar_label: 🎮 Stacks & Queues (Practice)
+sidebar_position: 100
+description: Interactive practice for Stacks & Queues — animated walkthrough and a live Python exercise.
+pagination_prev: 02-core-dsa/stacks-and-queues
+pagination_next: null
+---
+
+# 🎮 Stacks & Queues (Practice)
+
+Companion to the **[Stacks & Queues guide](/docs/stacks-and-queues)**. Watch a stack validate balanced brackets, then implement the check.
+
+## 🎬 Watch it work
+
+<AlgoViz
+  title="Valid Parentheses — push opens, pop on match"
+  frames={[{"array": [1, 2, 3, 3, 2, 1], "highlights": {"0": "active"}, "caption": "'(' opens \u2192 push. Stack: ("}, {"array": [1, 2, 3, 3, 2, 1], "highlights": {"1": "active"}, "caption": "'[' opens \u2192 push. Stack: (["}, {"array": [1, 2, 3, 3, 2, 1], "highlights": {"2": "active"}, "caption": "'{' opens \u2192 push. Stack: ([{"}, {"array": [1, 2, 3, 3, 2, 1], "highlights": {"3": "done"}, "caption": "'}' matches \u2192 pop. Stack: (["}, {"array": [1, 2, 3, 3, 2, 1], "highlights": {"4": "done"}, "caption": "']' matches \u2192 pop. Stack: ("}, {"array": [1, 2, 3, 3, 2, 1], "highlights": {"5": "done"}, "caption": "')' matches \u2192 pop. Stack: empty"}, {"array": [1, 2, 3, 3, 2, 1], "highlights": {"0": "done", "1": "done", "2": "done", "3": "done", "4": "done", "5": "done"}, "caption": "Stack empty at end \u2192 valid \u2713"}]}
+/>
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Stacks & Queues — Practice"
+  height={380}
+  code={`# Valid parentheses using a stack. Return True if every bracket is matched.
+def is_valid(s):
+    stack = []
+    pairs = {')': '(', ']': '[', '}': '{'}
+    for c in s:
+        if c in '([{':
+            stack.append(c)
+        else:
+            if not stack or stack.pop() != pairs[c]:
+                return False
+    return not stack
+
+print(is_valid("([{}])"))   # -> True
+print(is_valid("(]"))       # -> False
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Return the **index** of the first unmatched bracket.
+2. Implement a queue using two stacks.
+3. Min-stack: support push/pop/getMin all in O(1).
+
+---
+
+*Continue the path → [Heaps & Priority Queues](/docs/heaps-and-priority-queues)*

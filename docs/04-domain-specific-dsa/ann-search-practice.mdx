@@ -1,0 +1,45 @@
+---
+title: ANN Search — Practice
+sidebar_label: 🎮 ANN Search (Practice)
+sidebar_position: 100
+description: Interactive practice for ANN Search — a live in-browser Python exercise.
+pagination_prev: 04-domain-specific-dsa/ann-search
+pagination_next: null
+---
+
+# 🎮 ANN Search (Practice)
+
+Companion to the **[ANN Search guide](/docs/ann-search)**. Cosine similarity search over vectors — the core of embedding retrieval. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 ANN Search — Practice"
+  height={400}
+  code={`# Brute-force cosine similarity search (the baseline ANN methods approximate).
+import math
+def cosine(a, b):
+    dot = sum(x*y for x, y in zip(a, b))
+    na = math.sqrt(sum(x*x for x in a))
+    nb = math.sqrt(sum(y*y for y in b))
+    return dot / (na * nb)
+
+def top_k(query, vectors, k=2):
+    scored = [(cosine(query, v), i) for i, v in enumerate(vectors)]
+    scored.sort(reverse=True)
+    return scored[:k]
+
+db = [[1,0,0],[0.9,0.1,0],[0,1,0],[0,0,1]]
+print(top_k([1,0,0], db, 2))   # nearest to [1,0,0]
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Normalize vectors once so search is just a dot product.
+2. Why do HNSW/IVF trade a little recall for huge speedups?
+3. How would you shard this over a million vectors?
+
+---
+
+*Continue the learning path → [Tokenization](/docs/tokenization)*

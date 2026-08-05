@@ -1,0 +1,42 @@
+---
+title: Matrix Ops & Attention — Practice
+sidebar_label: 🎮 Matrix/Attention (Practice)
+sidebar_position: 100
+description: Interactive practice for Matrix Ops & Attention — a live in-browser Python exercise.
+pagination_prev: 04-domain-specific-dsa/matrix-ops-attention-sparse
+pagination_next: null
+---
+
+# 🎮 Matrix/Attention (Practice)
+
+Companion to the **[Matrix Ops & Attention guide](/docs/matrix-ops-attention-sparse)**. Implement scaled dot-product attention — the heart of transformers. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Matrix Ops & Attention — Practice"
+  height={400}
+  code={`# Scaled dot-product attention with numpy (softmax(QK^T / sqrt(d)) V).
+import numpy as np
+def attention(Q, K, V):
+    d = Q.shape[-1]
+    scores = Q @ K.T / np.sqrt(d)
+    scores -= scores.max(axis=-1, keepdims=True)   # numerical stability
+    w = np.exp(scores)
+    w /= w.sum(axis=-1, keepdims=True)
+    return w @ V
+
+Q = np.array([[1.0, 0.0]]); K = np.array([[1.0,0.0],[0.0,1.0]]); V = np.array([[10.0],[20.0]])
+print(attention(Q, K, V))   # weighted toward the matching key
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Print the attention weight matrix and confirm rows sum to 1.
+2. Why the 1/sqrt(d) scaling? (gradient stability)
+3. Where does the O(n^2) cost come from, and how do sparse formats help?
+
+---
+
+*Continue the learning path → [Beam Search](/docs/beam-search)*

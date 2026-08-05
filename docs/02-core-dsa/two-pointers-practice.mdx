@@ -1,0 +1,60 @@
+---
+title: Two Pointers — Practice
+sidebar_label: 🎮 Two Pointers (Practice)
+sidebar_position: 100
+description: Interactive Two Pointers practice — animated walkthrough plus a live Python coding exercise.
+---
+
+# 🎮 Two Pointers — Interactive Practice
+
+Companion to the [Two Pointers guide](/docs/two-pointers). Watch the technique in motion, then solve it yourself in the live editor below — all running in your browser.
+
+## 🎬 Watch it work: Two Sum on a sorted array
+
+The **converging pointers** pattern: start at both ends, move inward based on whether the current sum is too small or too big. Press **Play** (or step through) to see why it's O(n) instead of O(n²).
+
+<AlgoViz
+  title="Two Sum II — Converging Pointers"
+  frames={[{"array": [2, 3, 5, 8, 11, 15], "pointers": {"L": 0, "R": 5}, "caption": "Target = 13. Start: L at index 0, R at index 5."}, {"array": [2, 3, 5, 8, 11, 15], "pointers": {"L": 0, "R": 5}, "highlights": {"0": "active", "5": "active"}, "caption": "2 + 15 = 17 > 13 \u2192 move R left"}, {"array": [2, 3, 5, 8, 11, 15], "pointers": {"L": 0, "R": 4}, "highlights": {"0": "done", "4": "done"}, "caption": "2 + 11 = 13 = target \u2713 Found!"}]}
+/>
+
+**Why it works:** because the array is sorted, if the sum is too small the only way to increase it is to move the left pointer right; if too big, move the right pointer left. Every step eliminates one candidate, so we touch each element at most once.
+
+## 🐍 Your turn: implement it
+
+Fill in the two-pointer logic and run the tests. The starter already has a working solution — try modifying it (e.g. return the values instead of indices, or handle "no solution").
+
+<PythonRunner
+  title="🐍 Two Sum II — Practice"
+  height={360}
+  code={`# Two Sum II — sorted array, return the two indices (1-based) that sum to target.
+# Implement the two-pointer solution. Aim for O(n) time, O(1) space.
+
+def two_sum_sorted(nums, target):
+    left, right = 0, len(nums) - 1
+    while left < right:
+        s = nums[left] + nums[right]
+        if s == target:
+            return [left + 1, right + 1]
+        elif s < target:
+            left += 1
+        else:
+            right -= 1
+    return []
+
+# Tests
+print(two_sum_sorted([2, 3, 5, 8, 11, 15], 13))  # -> [1, 5]  (2 + 11 = 13)
+print(two_sum_sorted([1, 2, 3, 4, 4, 9, 56, 90], 8))  # -> [4, 5]  (4 + 4 = 8)
+print(two_sum_sorted([-1, 0, 3, 7], 10))  # -> [3, 4]  (3 + 7 = 10)
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Modify the function to return the **values** instead of indices.
+2. What happens on an **unsorted** array? (Try it — then recall why sorting is a prerequisite.)
+3. Extend to **3Sum**: fix one element, two-pointer the rest. Sketch it in the editor.
+
+---
+
+*Ready for more? Continue the learning path → [Sliding Window](/docs/sliding-window)*

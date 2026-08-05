@@ -1,0 +1,51 @@
+---
+title: Sorting Algorithms
+sidebar_label: 🎮 Sorting (Practice)
+sidebar_position: 100
+description: Interactive practice for Sorting Algorithms — animated walkthrough and a live Python exercise.
+pagination_prev: 02-core-dsa/sorting-algorithms
+pagination_next: null
+---
+
+# 🎮 Sorting (Practice)
+
+Companion to the **[Sorting Algorithms guide](/docs/sorting-algorithms)**. Watch bubble sort settle elements one by one, then implement insertion sort yourself.
+
+## 🎬 Watch it work
+
+<AlgoViz
+  title="Bubble Sort — adjacent compare & swap"
+  frames={[{"array": [5, 2, 8, 1, 4], "caption": "Unsorted. Bubble sort compares adjacent pairs and swaps if out of order."}, {"array": [5, 2, 8, 1, 4], "highlights": {"0": "compare", "1": "compare"}, "caption": "Compare 5 and 2"}, {"array": [2, 5, 8, 1, 4], "highlights": {"0": "active", "1": "active"}, "caption": "Out of order \u2192 swap"}, {"array": [2, 5, 8, 1, 4], "highlights": {"1": "compare", "2": "compare"}, "caption": "Compare 5 and 8"}, {"array": [2, 5, 8, 1, 4], "highlights": {"2": "compare", "3": "compare"}, "caption": "Compare 8 and 1"}, {"array": [2, 5, 1, 8, 4], "highlights": {"2": "active", "3": "active"}, "caption": "Out of order \u2192 swap"}, {"array": [2, 5, 1, 8, 4], "highlights": {"3": "compare", "4": "compare"}, "caption": "Compare 8 and 4"}, {"array": [2, 5, 1, 4, 8], "highlights": {"3": "active", "4": "active"}, "caption": "Out of order \u2192 swap"}, {"array": [2, 5, 1, 4, 8], "highlights": {"4": "done"}, "caption": "Largest settles at index 4"}, {"array": [2, 5, 1, 4, 8], "highlights": {"0": "compare", "1": "compare"}, "caption": "Compare 2 and 5"}, {"array": [2, 5, 1, 4, 8], "highlights": {"1": "compare", "2": "compare"}, "caption": "Compare 5 and 1"}, {"array": [2, 1, 5, 4, 8], "highlights": {"1": "active", "2": "active"}, "caption": "Out of order \u2192 swap"}, {"array": [2, 1, 5, 4, 8], "highlights": {"2": "compare", "3": "compare"}, "caption": "Compare 5 and 4"}, {"array": [2, 1, 4, 5, 8], "highlights": {"2": "active", "3": "active"}, "caption": "Out of order \u2192 swap"}, {"array": [2, 1, 4, 5, 8], "highlights": {"3": "done"}, "caption": "Largest settles at index 3"}, {"array": [2, 1, 4, 5, 8], "highlights": {"0": "compare", "1": "compare"}, "caption": "Compare 2 and 1"}, {"array": [1, 2, 4, 5, 8], "highlights": {"0": "active", "1": "active"}, "caption": "Out of order \u2192 swap"}, {"array": [1, 2, 4, 5, 8], "highlights": {"1": "compare", "2": "compare"}, "caption": "Compare 2 and 4"}, {"array": [1, 2, 4, 5, 8], "highlights": {"2": "done"}, "caption": "Largest settles at index 2"}, {"array": [1, 2, 4, 5, 8], "highlights": {"0": "compare", "1": "compare"}, "caption": "Compare 1 and 2"}, {"array": [1, 2, 4, 5, 8], "highlights": {"1": "done"}, "caption": "Largest settles at index 1"}, {"array": [1, 2, 4, 5, 8], "highlights": {"0": "done"}, "caption": "Largest settles at index 0"}, {"array": [1, 2, 4, 5, 8], "highlights": {"0": "done", "1": "done", "2": "done", "3": "done", "4": "done"}, "caption": "Sorted! \u2713"}]}
+/>
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Sorting Algorithms — Practice"
+  height={380}
+  code={`# Implement insertion sort — build the sorted portion one element at a time.
+def insertion_sort(a):
+    a = a[:]                      # don't mutate the caller's list
+    for i in range(1, len(a)):
+        key = a[i]
+        j = i - 1
+        while j >= 0 and a[j] > key:
+            a[j + 1] = a[j]
+            j -= 1
+        a[j + 1] = key
+    return a
+
+print(insertion_sort([5, 2, 8, 1, 4]))   # -> [1, 2, 4, 5, 8]
+print(insertion_sort([9, 7, 5, 3, 1]))   # -> [1, 3, 5, 7, 9]
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Modify it to sort in **descending** order.
+2. Count the number of swaps — which input order maximizes them?
+3. Why is insertion sort O(n) on an already-sorted array but O(n²) worst case?
+
+---
+
+*Continue the path → [Stacks & Queues](/docs/stacks-and-queues)*

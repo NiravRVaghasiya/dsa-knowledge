@@ -1,0 +1,62 @@
+---
+title: Union-Find
+sidebar_label: 🎮 Union-Find (Practice)
+sidebar_position: 100
+description: Interactive practice for Union-Find — animated walkthrough and a live Python exercise.
+pagination_prev: 03-advanced-dsa/union-find
+pagination_next: null
+---
+
+# 🎮 Union-Find (Practice)
+
+Companion to the **[Union-Find guide](/docs/union-find)**. Watch disjoint sets merge as edges are added, then implement DSU with path compression.
+
+## 🎬 Watch it work
+
+<AlgoViz
+  title="Union-Find — merging disjoint sets"
+  frames={[{"array": [0, 1, 2, 3, 4, 5], "caption": "6 singleton sets. Union-Find merges them."}, {"array": [0, 1, 2, 3, 4, 5], "highlights": {"0": "active", "1": "active", "2": "compare", "3": "done", "4": "window", "5": "active"}, "caption": "union(0,1) \u2192 merged. Groups share color."}, {"array": [0, 1, 2, 3, 4, 5], "highlights": {"0": "active", "1": "active", "2": "compare", "3": "compare", "4": "done", "5": "window"}, "caption": "union(2,3) \u2192 merged. Groups share color."}, {"array": [0, 1, 2, 3, 4, 5], "highlights": {"0": "active", "1": "active", "2": "active", "3": "active", "4": "compare", "5": "done"}, "caption": "union(1,3) \u2192 merged. Groups share color."}, {"array": [0, 1, 2, 3, 4, 5], "highlights": {"0": "active", "1": "active", "2": "active", "3": "active", "4": "compare", "5": "compare"}, "caption": "union(4,5) \u2192 merged. Groups share color."}]}
+/>
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Union-Find — Practice"
+  height={380}
+  code={`# Union-Find (Disjoint Set Union) with path compression + union by size.
+class DSU:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.size = [1] * n
+    def find(self, x):
+        while self.parent[x] != x:
+            self.parent[x] = self.parent[self.parent[x]]  # path compression
+            x = self.parent[x]
+        return x
+    def union(self, a, b):
+        ra, rb = self.find(a), self.find(b)
+        if ra == rb:
+            return False           # already connected
+        if self.size[ra] < self.size[rb]:
+            ra, rb = rb, ra
+        self.parent[rb] = ra
+        self.size[ra] += self.size[rb]
+        return True
+
+d = DSU(6)
+for a, b in [(0,1),(2,3),(1,3),(4,5)]:
+    d.union(a, b)
+print(d.find(0) == d.find(3))   # -> True  (0-1-3-2 connected)
+print(d.find(0) == d.find(4))   # -> False
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Count the number of **connected components** after all unions.
+2. Use DSU to detect a **cycle** in an undirected graph.
+3. Why does path compression + union by size give near-O(1) amortized?
+
+---
+
+*Continue the path → [Greedy Algorithms](/docs/greedy-algorithms)*

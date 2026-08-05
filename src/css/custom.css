@@ -1,0 +1,68 @@
+:root {
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1e40af;
+  --ifm-color-primary-darkest: #1e3a8a;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #60a5fa;
+  --ifm-color-primary-dark: #3b82f6;
+  --ifm-color-primary-darker: #2563eb;
+  --ifm-color-primary-darkest: #1d4ed8;
+  --ifm-color-primary-light: #93c5fd;
+  --ifm-color-primary-lighter: #bfdbfe;
+  --ifm-color-primary-lightest: #dbeafe;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-background-color: #0b1120;
+  --ifm-background-surface-color: #111827;
+}
+
+/* Hero */
+.heroBanner {
+  padding: 5rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(1200px 400px at 50% -10%, rgba(37,99,235,0.25), transparent 70%);
+}
+.heroTitle { font-size: 3rem; font-weight: 800; letter-spacing: -0.02em; }
+.heroSubtitle { font-size: 1.25rem; opacity: 0.85; max-width: 720px; margin: 1rem auto 2rem; }
+.heroButtons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.heroStats { display: flex; gap: 2.5rem; justify-content: center; margin-top: 2.5rem; flex-wrap: wrap; }
+.heroStat { text-align: center; }
+.heroStatNum { font-size: 2rem; font-weight: 800; color: var(--ifm-color-primary); }
+.heroStatLabel { font-size: 0.85rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Section cards */
+.sectionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin: 3rem 0;
+}
+.sectionCard {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 14px;
+  padding: 1.75rem;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  background: var(--ifm-background-surface-color);
+  height: 100%;
+}
+.sectionCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 10px 30px rgba(37,99,235,0.15);
+}
+.sectionEmoji { font-size: 2.25rem; }
+.sectionCardTitle { font-size: 1.35rem; font-weight: 700; margin: 0.75rem 0 0.5rem; }
+.sectionCardDesc { opacity: 0.8; font-size: 0.95rem; margin-bottom: 0.75rem; }
+.sectionCardCount { font-size: 0.8rem; font-weight: 600; color: var(--ifm-color-primary); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Difficulty badge quote blocks in docs */
+blockquote { border-left-width: 4px; }

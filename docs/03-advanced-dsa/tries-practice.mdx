@@ -1,0 +1,52 @@
+---
+title: Tries (Prefix Trees) — Practice
+sidebar_label: 🎮 Tries (Practice)
+sidebar_position: 100
+description: Interactive practice for Tries (Prefix Trees) — a live in-browser Python exercise.
+pagination_prev: 03-advanced-dsa/tries
+pagination_next: null
+---
+
+# 🎮 Tries (Practice)
+
+Companion to the **[Tries (Prefix Trees) guide](/docs/tries)**. Build a trie and support insert + prefix search. Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Tries (Prefix Trees) — Practice"
+  height={400}
+  code={`# A Trie (prefix tree) supporting insert and startsWith.
+class Trie:
+    def __init__(self):
+        self.root = {}
+    def insert(self, word):
+        node = self.root
+        for ch in word:
+            node = node.setdefault(ch, {})
+        node["\$"] = True          # end-of-word marker
+    def starts_with(self, prefix):
+        node = self.root
+        for ch in prefix:
+            if ch not in node:
+                return False
+            node = node[ch]
+        return True
+
+t = Trie()
+for w in ["cat", "car", "card", "dog"]:
+    t.insert(w)
+print(t.starts_with("ca"))   # -> True
+print(t.starts_with("dax"))  # -> False
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Add a `search(word)` that requires a full word match.
+2. Collect all words with a given prefix (autocomplete).
+3. How does a trie relate to how tokenizers store vocab?
+
+---
+
+*Continue the learning path → [Segment Tree Fenwick](/docs/segment-tree-fenwick)*

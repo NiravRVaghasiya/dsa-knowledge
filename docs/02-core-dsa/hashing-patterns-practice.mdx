@@ -1,0 +1,45 @@
+---
+title: Hashing Patterns — Practice
+sidebar_label: 🎮 Hashing Patterns (Practice)
+sidebar_position: 100
+description: Interactive practice for Hashing Patterns — a live in-browser Python exercise.
+pagination_prev: 02-core-dsa/hashing-patterns
+pagination_next: null
+---
+
+# 🎮 Hashing Patterns (Practice)
+
+Companion to the **[Hashing Patterns guide](/docs/hashing-patterns)**. Prefix-sum hashing: count subarrays summing to k in O(n). Edit and run the code right here — it executes in your browser.
+
+## 🐍 Your turn
+
+<PythonRunner
+  title="🐍 Hashing Patterns — Practice"
+  height={400}
+  code={`# Count subarrays whose sum equals k, using prefix-sum counts.
+from collections import defaultdict
+def subarray_sum(nums, k):
+    count = 0
+    prefix = 0
+    seen = defaultdict(int)
+    seen[0] = 1
+    for x in nums:
+        prefix += x
+        count += seen[prefix - k]   # a prior prefix makes a window summing to k
+        seen[prefix] += 1
+    return count
+
+print(subarray_sum([1, 1, 1], 2))       # -> 2
+print(subarray_sum([1, 2, 3], 3))       # -> 2
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Return the actual subarray index ranges, not just the count.
+2. Longest subarray with sum k.
+3. Why does seen[0]=1 handle prefixes that themselves equal k?
+
+---
+
+*Continue the learning path → [Binary Search](/docs/binary-search)*
