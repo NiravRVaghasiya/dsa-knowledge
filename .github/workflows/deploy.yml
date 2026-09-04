@@ -54,7 +54,11 @@ jobs:
       - name: Install & build (fallback)
         if: steps.download.outcome != 'success'
         run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+          if [ -f package-lock.json ]; then
+            npm ci || (rm -rf node_modules package-lock.json && npm install)
+          else
+            npm install
+          fi
           npm run build
 
       - name: Upload Pages artifact
