@@ -32,12 +32,9 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        # `npm ci` requires a committed package-lock.json and installs exactly
-        # the pinned versions. Fall back to `npm install` only if the lockfile
-        # is somehow absent, so the workflow is robust either way.
         run: |
           if [ -f package-lock.json ]; then
-            npm ci
+            npm ci || (rm -rf node_modules package-lock.json && npm install)
           else
             echo "::warning::package-lock.json not found; running 'npm install'."
             npm install
