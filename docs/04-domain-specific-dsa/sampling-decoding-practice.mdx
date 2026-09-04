@@ -1,0 +1,105 @@
+---
+title: Sampling & Search Decoding — Practice
+slug: /sampling-decoding-practice
+sidebar_label: 🎮 Sampling & Decoding (Practice)
+sidebar_position: 100
+description: Runnable greedy, temperature, top-k, and top-p (nucleus) samplers, and the size-k heap that powers top-k selection.
+pagination_prev: domain-specific-dsa/sampling-decoding
+pagination_next: null
+---
+
+# 🎮 Sampling & Search Decoding (Practice)
+
+Companion to the **[Sampling & Search Decoding guide](/docs/sampling-decoding)**. Implement all four strategies and see how temperature/top-k/top-p reshape the same distribution.
+
+## 🐍 The four decoding strategies
+
+<PythonRunner
+  title="🐍 greedy · temperature · top-k · top-p on the same logits"
+  height={620}
+  code={`import math, heapq, random
+random.seed(0)
+
+vocab = ["the","a","cat","dog","runs","sleeps","quickly","."]
+logits = [3.2, 2.9, 1.5, 1.4, 0.8, 0.7, -0.2, 2.1]   # model's raw scores
+
+def softmax(z, temp=1.0):
+    m = max(z)
+    e = [math.exp((x - m) / temp) for x in z]
+    s = sum(e)
+    return [x / s for x in e]
+
+def greedy(z):
+    return vocab[max(range(len(z)), key=lambda i: z[i])]
+
+def top_k(z, k, temp=1.0):
+    # size-k min-heap keeps the k largest logits in O(|V| log k)
+    heap = []
+    for i, x in enumerate(z):
+        heapq.heappush(heap, (x, i))
+        if len(heap) > k:
+            heapq.heappop(heap)                 # drop the weakest of the top-k
+    idx = [i for _, i in heap]
+    probs = softmax([z[i] for i in idx], temp)
+    return idx, probs
+
+def top_p(z, p, temp=1.0):
+    probs = softmax(z, temp)
+    order = sorted(range(len(z)), key=lambda i: probs[i], reverse=True)
+    cum, nucleus = 0.0, []
+    for i in order:                             # prefix sum until cumulative >= p
+        nucleus.append(i)
+        cum += probs[i]
+        if cum >= p:
+            break
+    renorm = [probs[i] for i in nucleus]
+    s = sum(renorm)
+    return nucleus, [x / s for x in renorm]
+
+print("greedy           ->", greedy(logits))
+ki, kp = top_k(logits, 3)
+print("top-k=3 keeps    ->", [vocab[i] for i in ki])
+pi, pp = top_p(logits, 0.9)
+print("top-p=0.9 keeps  ->", [vocab[i] for i in pi], "(adaptive size:", len(pi), "tokens)")
+
+print("\\ntemperature reshapes the distribution:")
+for t in [0.5, 1.0, 2.0]:
+    probs = softmax(logits, t)
+    print(f"  temp={t}: top prob = {max(probs):.3f}  (lower temp = sharper/greedier)")
+`}
+/>
+
+## 🐍 Top-k selection is the size-k heap — cost comparison
+
+<PythonRunner
+  title="🐍 heap-select vs full sort for top-k over a vocabulary"
+  height={380}
+  code={`import math
+
+def cost_full_sort(V):        # O(|V| log |V|)
+    return V * math.log2(V)
+
+def cost_heap_select(V, k):   # O(|V| log k)
+    return V * math.log2(k)
+
+V = 128_000                   # a realistic LLM vocabulary size
+print(f"{'k':>6} | {'full sort ops':>16} | {'size-k heap ops':>16} | speedup")
+print("-"*60)
+for k in [1, 10, 40, 100]:
+    a, b = cost_full_sort(V), cost_heap_select(V, k)
+    print(f"{k:>6} | {a:>16,.0f} | {b:>16,.0f} | {a/b:>6.1f}x")
+# The same size-k heap powers beam search (top-k sequences) and
+# k-NN / HNSW retrieval (top-k neighbors). One structure, three AI systems.
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Add **min-p** sampling (keep tokens with `P(v) ≥ p · max_prob`) and compare its cutoff to top-p on a peaked vs. flat distribution.
+2. Sample 1000 tokens with `top_p=0.9, temp=0.8` and plot the empirical token frequencies — verify the nucleus adapts per step.
+3. Add a **repetition penalty**: divide the logit of any already-generated token by `1.2` before sampling, and show it reduces loops.
+4. Show a case where **greedy loops** ("the the the") but **top-p** stays fluent — the neural-text-degeneration result from Holtzman et al.
+
+---
+
+*Back to the [Sampling & Search Decoding guide](/docs/sampling-decoding) → next: [AI Systems Benchmarks](/docs/ai-systems-benchmarks)*

@@ -20,7 +20,7 @@ prerequisites:
     to: /docs/hashing-patterns
 pagination_prev: domain-specific-dsa/kd-trees-ball-trees
 pagination_next: domain-specific-dsa/tokenization
-path_step: 25
+path_step: 31
 ---
 
 # Approximate Nearest Neighbor Search — Ultimate Guide

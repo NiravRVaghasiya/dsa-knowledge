@@ -519,10 +519,7 @@ Sorting is rarely the *headline* of an ML system, but it's woven through the plu
 - **The **`cmp`** parameter is gone (Python 3).** Old comparator functions must be wrapped with `functools.cmp_to_key(cmp)`. Prefer a `key` function — it's called once per element (`O(n)` key extractions) vs. a comparator's `O(n log n)` calls, so `key` is both faster and cleaner.
 - `key`** is evaluated once per element.** If your key is expensive (regex, DB lookup, model call), that's fine — it won't be recomputed during comparisons. But precompute it once yourself if you also need the values elsewhere.
 - **Mixing incomparable types raises **`TypeError`** in Python 3.** `sorted([1, "a"])` throws. There's no silent coercion like Python 2. Normalize types (or key-map them) first.
-- `NaN`** breaks sorting silently.** `float('nan')` compares `False` against everything, so a `NaN` in your data produces a *non-deterministic, non-sorted* result with **no error**. Filter or replace NaNs before sorting model scores/losses:```python
-clean = [x for x in scores if not math.isnan(x)]
-
-```
+- `NaN`** breaks sorting silently.** `float('nan')` compares `False` against everything, so a `NaN` in your data produces a *non-deterministic, non-sorted* result with **no error**. Filter or replace NaNs before sorting model scores/losses: `clean = [x for x in scores if not math.isnan(x)]`.
 - **Stability is a feature — use it.** To sort by multiple criteria with mixed directions on non-numeric keys, do successive stable sorts from least- to most-significant key. Timsort guarantees earlier order survives.
 - **Don't full-sort for top-k.** `heapq.nlargest(k, ...)` (`O(n log k)`) and `np.argpartition` (`O(n)`) crush a full sort when `k << n`. This is the highest-ROI sorting optimization in ML serving.
 - `operator.itemgetter`**/**`attrgetter`** > **`lambda`**.** For large lists, the C-level getters measurably beat Python lambdas as key functions.

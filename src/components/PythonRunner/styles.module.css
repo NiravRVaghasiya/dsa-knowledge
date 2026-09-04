@@ -36,6 +36,13 @@
   background: transparent; border: 1px solid var(--ifm-color-emphasis-300);
   color: var(--ifm-color-emphasis-800); padding: 0.45rem 1rem; border-radius: 8px; cursor: pointer;
 }
+.resetBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+.notice {
+  margin: 0; padding: 0.7rem 0.9rem;
+  font-size: 0.8rem; font-style: italic;
+  color: var(--ifm-color-emphasis-700);
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
 .output {
   margin: 0; padding: 0.9rem;
   font-family: var(--ifm-font-family-monospace); font-size: 0.82rem;

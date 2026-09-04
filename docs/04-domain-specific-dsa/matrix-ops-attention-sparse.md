@@ -19,7 +19,7 @@ prerequisites:
     to: /docs/python-internals-numpy-memory
 pagination_prev: domain-specific-dsa/tokenization
 pagination_next: domain-specific-dsa/beam-search
-path_step: 27
+path_step: 33
 ---
 
 # The Definitive Reference: Matrix Operations, Complexity, Attention's $O(n^2)$ Wall, and Sparse Formats

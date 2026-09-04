@@ -1,0 +1,68 @@
+---
+title: KV Cache — Practice
+slug: /kv-cache-practice
+sidebar_label: 🎮 KV Cache (Practice)
+sidebar_position: 100
+description: Watch the KV cache grow and measure how caching turns O(L²) recomputation into O(L) work.
+pagination_prev: domain-specific-dsa/kv-cache
+pagination_next: null
+---
+
+import {kvCacheGrowthFrames} from '@site/src/components/viz/algorithms/kvcache';
+
+# 🎮 KV Cache (Practice)
+
+Companion to the **[KV Cache & Paged Attention guide](/docs/kv-cache)**. See the cache fill one row per token, then measure the work saved.
+
+## 🎬 KV cache growth during decoding
+
+Each decode step appends one key row (the value cache grows identically). The newly written row is highlighted; already-cached rows are settled. Memory grows linearly with sequence length.
+
+<Visualizer
+  title="🗄️ KV cache filling one row per generated token"
+  height={300}
+  frames={kvCacheGrowthFrames(8)}
+/>
+
+## 🐍 Cached vs. recomputed — the O(L²) → O(L) win
+
+<PythonRunner
+  title="🐍 Count the key-projection work with and without a cache"
+  height={480}
+  code={`# Model each token's key projection as one unit of work. Compare the total
+# work to generate T tokens WITH a KV cache vs. WITHOUT (naive recompute).
+
+def work_without_cache(T):
+    # step t recomputes keys for all t tokens seen so far
+    return sum(t for t in range(1, T + 1))      # 1 + 2 + ... + T = T(T+1)/2
+
+def work_with_cache(T):
+    # step t projects only the ONE new token; past keys are cached
+    return T
+
+print(f"{'T':>6} | {'no cache (O(T^2))':>18} | {'cache (O(T))':>14} | speedup")
+print("-"*60)
+for T in [8, 64, 512, 4096]:
+    a, b = work_without_cache(T), work_with_cache(T)
+    print(f"{T:>6} | {a:>18,} | {b:>14,} | {a/b:>6.1f}x")
+
+# Memory side: cache size grows linearly with T (O(L*D) per layer).
+D_per_layer, layers, bytes_per = 5120, 40, 2   # Llama-13B-ish, fp16, K+V
+def cache_gb(T):
+    return 2 * T * layers * D_per_layer * bytes_per / 1e9
+print()
+for T in [512, 2048, 4096]:
+    print(f"context {T:>5} tokens -> KV cache ~{cache_gb(T):.2f} GB (one sequence)")
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Recompute the cache-size table for **GQA** with `n_kv = 8` heads instead of 40 and confirm the ~5× memory reduction.
+2. Model **continuous batching**: simulate requests of random lengths arriving/finishing and track how many fit in a fixed cache budget vs. static padding to `max_length`.
+3. Implement a tiny **block allocator** (PagedAttention-style): fixed-size blocks, a free list, and a per-sequence block table. Show that two sequences sharing a prefix can share blocks (copy-on-write) until they diverge.
+4. Add **sliding-window** eviction (keep only the last `w` rows) and show cache memory becomes `O(w)` — a ring buffer over the KV cache.
+
+---
+
+*Back to the [KV Cache guide](/docs/kv-cache) → next: [Sampling & Search Decoding](/docs/sampling-decoding)*

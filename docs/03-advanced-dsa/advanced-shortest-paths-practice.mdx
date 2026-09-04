@@ -1,0 +1,91 @@
+---
+title: Advanced Shortest Paths — Practice
+sidebar_label: 🎮 Advanced Shortest Paths (Practice)
+sidebar_position: 100
+description: Interactive practice for Bellman-Ford, Floyd-Warshall, and 0-1 BFS — run and edit the code in your browser.
+pagination_prev: advanced-dsa/advanced-shortest-paths
+pagination_next: null
+---
+
+# 🎮 Advanced Shortest Paths (Practice)
+
+Companion to the **[Advanced Shortest Paths guide](/docs/advanced-shortest-paths)**. Edit and run these in your browser to feel *why* Dijkstra fails on negatives and how the alternatives fix it.
+
+## 🎬 Watch it work — Bellman-Ford relaxes in rounds
+
+Each round relaxes every edge once; after round `k`, all shortest paths using `≤ k` edges are correct.
+
+<AlgoViz
+  title="Bellman-Ford — dist[] settling over rounds (source = node 0)"
+  frames={[{"array": [0, 99, 99, 99], "highlights": {"0": "done"}, "caption": "Init: dist[0]=0, others = infinity (shown as 99)"}, {"array": [0, 4, 5, 99], "highlights": {"1": "active", "2": "active"}, "caption": "Round 1: relax 0->1 (4), 0->2 (5)"}, {"array": [0, 4, 1, 10], "highlights": {"2": "active", "3": "active"}, "caption": "Round 2: 1->2 (-3) gives dist[2]=1; 2->3 gives 10"}, {"array": [0, 4, 1, 5], "highlights": {"3": "active"}, "caption": "Round 3: cheaper 2->3 via dist[2]=1 -> dist[3]=5"}, {"array": [0, 4, 1, 5], "highlights": {"0": "done", "1": "done", "2": "done", "3": "done"}, "caption": "No change in a full pass -> all distances final ✓"}]}
+/>
+
+## 🐍 Bellman-Ford — detect a negative cycle
+
+<PythonRunner
+  title="🐍 Bellman-Ford with negative-cycle detection"
+  height={420}
+  code={`def bellman_ford(n, edges, source):
+    INF = float('inf')
+    dist = [INF] * n
+    dist[source] = 0
+    for _ in range(n - 1):
+        changed = False
+        for u, v, w in edges:
+            if dist[u] != INF and dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+                changed = True
+        if not changed:
+            break
+    # one extra pass: any relaxation now => reachable negative cycle
+    for u, v, w in edges:
+        if dist[u] != INF and dist[u] + w < dist[v]:
+            return dist, True
+    return dist, False
+
+# No negative cycle: 0->1->2 = 4-3 = 1 beats direct 0->2 = 5
+edges = [(0, 1, 4), (0, 2, 5), (1, 2, -3), (2, 3, 4)]
+print("distances:", bellman_ford(4, edges, 0))   # ([0, 4, 1, 5], False)
+
+# Add a negative cycle 3->1 (-10) reachable from source
+edges2 = edges + [(3, 1, -10)]
+print("with neg cycle:", bellman_ford(4, edges2, 0)[1])   # True
+`}
+/>
+
+## 🐍 0-1 BFS — deque instead of a heap
+
+<PythonRunner
+  title="🐍 0-1 BFS on a small 0/1-weighted graph"
+  height={360}
+  code={`from collections import deque
+
+def zero_one_bfs(graph, n, source):
+    INF = float('inf')
+    dist = [INF] * n
+    dist[source] = 0
+    dq = deque([source])
+    while dq:
+        u = dq.popleft()
+        for v, w in graph[u]:
+            nd = dist[u] + w
+            if nd < dist[v]:
+                dist[v] = nd
+                dq.appendleft(v) if w == 0 else dq.append(v)  # front for 0, back for 1
+    return dist
+
+graph = {0: [(1, 0), (2, 1)], 1: [(3, 1)], 2: [(3, 0)], 3: []}
+print(zero_one_bfs(graph, 4, 0))   # [0, 0, 1, 1]
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Modify Bellman-Ford to **return the actual negative cycle** (track predecessors, walk back `V` steps).
+2. Implement **Cheapest Flights Within K Stops** (LC 787) by running exactly `K+1` Bellman-Ford rounds — why does the round count equal "edges allowed"?
+3. Implement **Floyd-Warshall** and verify `dist[i][i] < 0` detects a negative cycle. Confirm swapping the loop order (`k` not outermost) breaks it.
+4. Solve **Minimum Obstacle Removal** (LC 2290) with 0-1 BFS: empty cell = weight 0, obstacle = weight 1.
+
+---
+
+*Back to the [Advanced Shortest Paths guide](/docs/advanced-shortest-paths) → next up: [Minimum Spanning Trees](/docs/minimum-spanning-tree)*

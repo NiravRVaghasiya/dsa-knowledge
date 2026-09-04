@@ -1,0 +1,83 @@
+---
+title: String Matching — Practice
+sidebar_label: 🎮 String Matching (Practice)
+sidebar_position: 100
+description: Interactive practice for rolling hash, KMP, the Z-algorithm, and Aho-Corasick — run the matchers in your browser.
+pagination_prev: advanced-dsa/string-matching
+pagination_next: null
+---
+
+# 🎮 String Matching (Practice)
+
+Companion to the **[String Matching guide](/docs/string-matching)**. Run these to feel why KMP never rewinds the text and how one pass can find many patterns at once.
+
+## 🐍 KMP — build the failure function, then search
+
+<PythonRunner
+  title="🐍 KMP substring search (worst-case O(n+m))"
+  height={460}
+  code={`def prefix_function(pat):
+    m = len(pat); pi = [0]*m; k = 0
+    for i in range(1, m):
+        while k > 0 and pat[i] != pat[k]:
+            k = pi[k-1]                 # fall back to next-best border
+        if pat[i] == pat[k]:
+            k += 1
+        pi[i] = k
+    return pi
+
+def kmp_search(text, pat):
+    if not pat: return []
+    pi = prefix_function(pat); hits = []; k = 0
+    for i, ch in enumerate(text):
+        while k > 0 and ch != pat[k]:
+            k = pi[k-1]                 # reuse failure fn -> text pointer never rewinds
+        if ch == pat[k]:
+            k += 1
+        if k == len(pat):
+            hits.append(i - len(pat) + 1)
+            k = pi[k-1]                 # keep going for overlaps
+    return hits
+
+print("pi of 'ababaca':", prefix_function("ababaca"))   # [0,0,1,2,3,0,1]
+print("matches:", kmp_search("ababcababa", "aba"))        # [0, 5, 7]
+`}
+/>
+
+## 🐍 Rolling hash (Rabin-Karp) — compare windows in O(1)
+
+<PythonRunner
+  title="🐍 Rabin-Karp with verification"
+  height={420}
+  code={`def rabin_karp(text, pat, base=257, mod=(1<<61)-1):
+    n, m = len(text), len(pat)
+    if m == 0 or m > n: return []
+    high = pow(base, m-1, mod)
+    ph = th = 0
+    for i in range(m):
+        ph = (ph*base + ord(pat[i]))  % mod
+        th = (th*base + ord(text[i])) % mod
+    hits = []
+    for i in range(n - m + 1):
+        if ph == th and text[i:i+m] == pat:   # verify to rule out a hash collision
+            hits.append(i)
+        if i < n - m:                          # roll the window
+            th = (th - ord(text[i])*high) % mod
+            th = (th*base + ord(text[i+m])) % mod
+    return hits
+
+print(rabin_karp("abracadabra", "abra"))   # [0, 7]
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Implement the **Z-algorithm** and search by running it on `pat + '\\x00' + text`; confirm it finds the same matches as KMP.
+2. Solve **Longest Happy Prefix** (LC 1392) — the answer is literally `pi[-1]` from the failure function.
+3. Detect **string periodicity**: for `"abcabcabc"`, show the smallest period is `n - pi[-1] = 3` (and that `"abcab"` has no full period).
+4. Build a tiny **Aho-Corasick** automaton over `["he","she","his","hers"]` and find all matches in `"ushers"` in one pass.
+5. Force a Rabin-Karp collision by using a tiny modulus, then observe why verification is mandatory.
+
+---
+
+*Back to the [String Matching guide](/docs/string-matching) → next up: [Tree Algorithms](/docs/tree-algorithms)*

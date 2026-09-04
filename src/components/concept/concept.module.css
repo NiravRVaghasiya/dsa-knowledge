@@ -1,0 +1,99 @@
+/* Concept card */
+.card {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  background: var(--ifm-background-surface-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+}
+.cardHeader { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.cardTitle { font-weight: 800; font-size: 1.02rem; margin: 0; }
+.cardTitle a { color: inherit; }
+.kindBadge {
+  font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.04em;
+  padding: 0.12rem 0.45rem; border-radius: 999px; font-weight: 700;
+  background: var(--ifm-color-emphasis-200); color: var(--ifm-color-emphasis-800);
+}
+.kindBadge.ai { background: rgba(37,99,235,0.15); color: #2563eb; }
+.def { font-size: 0.86rem; opacity: 0.9; margin: 0; }
+.metaRow { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; font-size: 0.72rem; }
+.pill {
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  padding: 0.12rem 0.5rem; border-radius: 999px; font-weight: 700; font-size: 0.7rem;
+}
+.beginner { background: rgba(34,197,94,0.15); color: #16a34a; }
+.intermediate { background: rgba(245,158,11,0.15); color: #b45309; }
+.advanced { background: rgba(239,68,68,0.15); color: #dc2626; }
+.complexity { font-family: var(--ifm-font-family-monospace); opacity: 0.8; }
+
+.section { margin-top: 0.25rem; }
+.sectionLabel { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.6; font-weight: 800; margin-bottom: 0.2rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.chip {
+  font-size: 0.72rem; background: var(--ifm-color-emphasis-100);
+  border: 1px solid var(--ifm-color-emphasis-200); border-radius: 6px; padding: 0.1rem 0.45rem;
+}
+.chip a { color: inherit; }
+
+.doneToggle {
+  display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;
+  font-size: 0.74rem; user-select: none; background: none; border: none; color: var(--ifm-color-emphasis-800);
+  padding: 0.2rem 0; font-weight: 600;
+}
+.doneToggle input { cursor: pointer; }
+.doneToggle.done { color: #16a34a; }
+
+/* Grid of cards */
+.grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/* Graph */
+.graphWrap { border: 1px solid var(--ifm-color-emphasis-300); border-radius: 12px; overflow: hidden; background: var(--ifm-background-surface-color); }
+.graphHeader { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.8rem; background: var(--ifm-color-emphasis-100); border-bottom: 1px solid var(--ifm-color-emphasis-200); font-size: 0.8rem; }
+.graphSvg { width: 100%; display: block; touch-action: none; }
+.graphControls { display: flex; gap: 0.4rem; }
+.graphControls button { background: var(--ifm-color-emphasis-200); border: none; border-radius: 6px; padding: 0.2rem 0.5rem; cursor: pointer; font-size: 0.8rem; }
+.gNodeLabel { font-size: 0.72rem; font-weight: 700; }
+.gEdgeLabel { font-size: 0.6rem; fill: var(--ifm-color-emphasis-700); }
+.legendRow { display: flex; flex-wrap: wrap; gap: 0.7rem; padding: 0.4rem 0.8rem; font-size: 0.68rem; border-top: 1px solid var(--ifm-color-emphasis-200); }
+.legendItem { display: flex; align-items: center; gap: 0.3rem; }
+.legendLine { width: 1.2rem; height: 0; border-top-width: 2px; border-top-style: solid; }
+
+/* Explorer layout */
+.explorerLayout { display: grid; grid-template-columns: 260px 1fr; gap: 1.5rem; align-items: start; }
+@media (max-width: 860px) { .explorerLayout { grid-template-columns: 1fr; } }
+.conceptList { border: 1px solid var(--ifm-color-emphasis-300); border-radius: 10px; max-height: 70vh; overflow: auto; }
+.conceptListItem { display: block; width: 100%; text-align: left; border: none; background: none; padding: 0.4rem 0.7rem; cursor: pointer; font-size: 0.82rem; color: var(--ifm-font-color-base); border-bottom: 1px solid var(--ifm-color-emphasis-100); }
+.conceptListItem:hover { background: var(--ifm-color-emphasis-100); }
+.conceptListItem.active { background: var(--ifm-color-primary); color: #fff; font-weight: 700; }
+.conceptListItem.doneItem::after { content: ' \2713'; color: #16a34a; }
+.conceptListItem.active.doneItem::after { color: #fff; }
+.searchInput { width: 100%; padding: 0.5rem 0.7rem; border: 1px solid var(--ifm-color-emphasis-300); border-radius: 8px; margin-bottom: 0.5rem; font-size: 0.85rem; }
+
+/* Inline text-button that looks like a link (used to walk the graph in lists) */
+.linkButton { background: none; border: none; color: var(--ifm-color-primary); cursor: pointer; padding: 0; font: inherit; }
+.linkButton:hover { text-decoration: underline; }
+
+/* Mapping table */
+.mapTable { width: 100%; border-collapse: collapse; }
+.mapTable th, .mapTable td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--ifm-color-emphasis-200); vertical-align: top; font-size: 0.86rem; }
+.mapTable th { position: sticky; top: 0; background: var(--ifm-background-surface-color); }
+.filterBar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; align-items: center; }
+
+/* Path */
+.pathCard { border: 1px solid var(--ifm-color-emphasis-300); border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: 1.2rem; background: var(--ifm-background-surface-color); }
+.pathSteps { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; margin-top: 0.6rem; }
+.pathStep { display: inline-flex; align-items: center; gap: 0.3rem; border: 1px solid var(--ifm-color-emphasis-300); border-radius: 8px; padding: 0.25rem 0.55rem; font-size: 0.78rem; }
+.pathStep.done { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.4); }
+.pathArrow { opacity: 0.4; }
+.progressBar { height: 6px; background: var(--ifm-color-emphasis-200); border-radius: 999px; overflow: hidden; margin-top: 0.5rem; }
+.progressFill { height: 100%; background: #16a34a; transition: width 0.3s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .progressFill, .conceptListItem { transition: none; }
+}

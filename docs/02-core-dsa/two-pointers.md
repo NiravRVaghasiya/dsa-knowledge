@@ -40,17 +40,17 @@ path_step: 7
 
 ---
 
-# 1. What Is Two Pointers?
+## 1. What Is Two Pointers?
 
 > 🧠 **Before you read this section:** all you need is the idea that an array is an ordered row of boxes, each reachable by an index like `arr[0]`, `arr[1]`, … The whole technique is about moving *two* index variables intelligently instead of using two nested loops.
 
-## Definition
+### Definition
 
 **Two Pointers** is an algorithmic technique that uses **two index variables** ("pointers") that traverse a data structure — usually an array, string, or linked list — in a coordinated way, so that a problem which naively needs **nested iteration (O(n²))** is solved in a **single coordinated pass (O(n))**.
 
 The pointers are not memory addresses in the C sense; they are simply **positions** (indices, or node references) that you advance according to a decision rule derived from the problem's structure.
 
-## Core Intuition
+### Core Intuition
 
 A brute-force solution examines **every pair** of elements: for each `i`, it loops over every `j`. That is `n × n` work. But most problems have **structure** — usually *sortedness* or *monotonicity* — that makes the vast majority of those pairs pointless to check.
 
@@ -60,7 +60,7 @@ Two Pointers exploits that structure with one governing idea:
 
 Because each move discards candidates permanently, the pointers never need to backtrack, and the total number of moves is bounded by `n`. That is the entire source of the speedup: **you replace "check everything" with "each step rules out a region."**
 
-## Real-World Analogy (non-technical)
+### Real-World Analogy (non-technical)
 
 Imagine a **long bookshelf sorted by price**, cheapest book on the left, most expensive on the right. A friend says: *"Find me two books that together cost exactly $50."*
 
@@ -71,7 +71,7 @@ Imagine a **long bookshelf sorted by price**, cheapest book on the left, most ex
 
 You found the pair in **one sweep of the shelf**, not by comparing every book against every other book. That march-toward-each-other sweep *is* the Two Pointers technique.
 
-## Why It Works
+### Why It Works
 
 Two Pointers is correct only when moving a pointer **provably discards no valid answer**. This relies on a **monotonic invariant**:
 
@@ -81,7 +81,7 @@ Two Pointers is correct only when moving a pointer **provably discards no valid 
 
 The invariant is what licenses "never look back." If you can't state such an invariant, Two Pointers is likely the wrong tool.
 
-## When to Recognize It
+### When to Recognize It
 
 Reach for Two Pointers when you see these signals:
 
@@ -96,11 +96,11 @@ Reach for Two Pointers when you see these signals:
 
 ---
 
-# 2. Variants & Patterns
+## 2. Variants & Patterns
 
 > 🧠 **Before you read this section:** you now know the *why* (a monotonic invariant lets each move discard candidates). This section catalogs the **four shapes** that idea takes. Learn to recognize the shape and the algorithm follows almost mechanically.
 
-## 2.1 Opposite-End Pointers (converging)
+### 2.1 Opposite-End Pointers (converging)
 
 Two pointers start at **both ends** and move **toward each other** until they meet.
 
@@ -127,7 +127,7 @@ Two pointers start at **both ends** and move **toward each other** until they me
 
 **Complexity:** Time **O(n)** (each element visited once) · Space **O(1)**.
 
-## 2.2 Same-Direction / Sliding Window Pointers
+### 2.2 Same-Direction / Sliding Window Pointers
 
 Both pointers move in the **same direction**. A `right` pointer *expands* the window; a `left` pointer *contracts* it when a constraint is violated. The gap between them is a **contiguous window**.
 
@@ -158,7 +158,7 @@ find longest window with sum <= 8
 
 **Complexity:** Time **O(n)** (each element enters and leaves the window at most once) · Space **O(1)** to **O(k)** (if tracking distinct elements).
 
-## 2.3 Fast & Slow Pointers (Floyd's Cycle Detection)
+### 2.3 Fast & Slow Pointers (Floyd's Cycle Detection)
 
 Two pointers traverse the **same** sequence at **different speeds** — slow moves 1 step, fast moves 2. Also called the **tortoise and hare**.
 
@@ -189,7 +189,7 @@ step5: S=6  F=6   → S == F inside the loop ⇒ CYCLE
 
 **Complexity:** Time **O(n)** · Space **O(1)** (the key win over a hash-set approach, which costs O(n) space).
 
-## 2.4 Multi-Array / Merge Pointers
+### 2.4 Multi-Array / Merge Pointers
 
 One pointer **per sequence**, each advancing independently. Used to combine or compare multiple ordered inputs.
 
@@ -227,13 +227,13 @@ A exhausted → drain B          merged = [1,2,3,4,7,8]
 
 ---
 
-# 3. Core Algorithms
+## 3. Core Algorithms
 
 > 🧠 **Before you read this section:** each problem is deliberately ordered so the invariant compounds. Two Sum teaches the converging move; Container and Trapping Rain Water reuse it with a richer decision rule; Remove Duplicates introduces the read/write same-direction pair; the linked-list problem introduces speed; merge introduces one pointer per array; the substring and 3Sum problems combine windows and converging pointers. Read them in order the first time.
 
 All code is Python (primary). Java/C++ differences are noted where they matter.
 
-## 🔹 Problem 1: Two Sum II — Sorted Array `[Easy]`
+### 🔹 Problem 1: Two Sum II — Sorted Array `[Easy]`
 
 **Problem Statement:** Given a **sorted** array and a target, return the 1-based indices of the two numbers that add to the target (exactly one solution exists).
 
@@ -275,7 +275,7 @@ def two_sum_sorted(numbers, target):
 **Edge cases:** duplicates (fine — indices still valid), negatives (fine — sortedness is all that matters), array length < 2 (guard with `if len(numbers) < 2: return []`).
 **Java/C++ note:** return `int[]{left+1, right+1}`; use `long` for the sum if values can overflow 32-bit int.
 
-## 🔹 Problem 2: Container With Most Water `[Medium]`
+### 🔹 Problem 2: Container With Most Water `[Medium]`
 
 **Problem Statement:** Given heights `h[i]`, pick two lines that with the x-axis form a container holding the most water. Area = `min(h[L], h[R]) * (R - L)`.
 
@@ -316,7 +316,7 @@ def max_area(height):
 **Edge cases:** equal walls (move either — moving both is also correct), fewer than 2 lines → area 0, flat array of zeros → 0.
 **Why moving the taller wall is wrong:** width shrinks regardless; if you keep the shorter wall, `min` is unchanged or smaller, so area cannot grow. That invariant makes the greedy move safe.
 
-## 🔹 Problem 3: Remove Duplicates from Sorted Array (in place) `[Easy]`
+### 🔹 Problem 3: Remove Duplicates from Sorted Array (in place) `[Easy]`
 
 **Problem Statement:** Given a sorted array, remove duplicates **in place** so each element appears once; return the new length `k`. The first `k` slots must hold the unique values.
 
@@ -355,7 +355,7 @@ def remove_duplicates(nums):
 **Edge cases:** empty array (return 0), all identical (`k = 1`), already unique (`k = n`, every read triggers a write).
 **Variant:** "allow at most 2 duplicates" — compare `nums[read]` against `nums[write - 1]` instead.
 
-## 🔹 Problem 4: Trapping Rain Water `[Hard]`
+### 🔹 Problem 4: Trapping Rain Water `[Hard]`
 
 **Problem Statement:** Given elevation heights, compute the total trapped rainwater after it rains.
 
@@ -400,7 +400,7 @@ def trap(height):
 **Edge cases:** empty / one bar → 0, monotonic slope → 0 (no valley), plateaus (equal heights trap nothing).
 **Common trap:** updating `total` *before* updating the running max understates water at the current bar. Update the max first.
 
-## 🔹 Problem 5: Linked List Cycle Detection — Floyd's `[Medium]`
+### 🔹 Problem 5: Linked List Cycle Detection — Floyd's `[Medium]`
 
 **Problem Statement:** Detect whether a linked list contains a cycle; if so, optionally return the node where the cycle begins.
 
@@ -447,7 +447,7 @@ def detect_cycle(head):
 **Edge cases:** empty list / single node with no self-loop (no cycle), single node self-loop (cycle at itself), two-node cycle.
 **Why phase 2 works:** the distance from head to entry equals the distance from the meeting point to entry (mod loop length) — a classic number-theoretic result.
 
-## 🔹 Problem 6: Merge Two Sorted Arrays `[Easy]`
+### 🔹 Problem 6: Merge Two Sorted Arrays `[Easy]`
 
 **Problem Statement:** Merge sorted arrays `A` and `B` into one sorted array. (In-place variant: `A` has trailing space for `B`.)
 
@@ -500,7 +500,7 @@ def merge_in_place(nums1, m, nums2, n):
 **Complexity:** Time **O(n + m)** · Space **O(n+m)** out-of-place, **O(1)** for the back-fill variant.
 **Edge cases:** one array empty (drain the other), duplicates across arrays (stable with `<=`), unequal lengths (tail drain handles it).
 
-## 🔹 Problem 7: Longest Substring Without Repeating Characters `[Medium]`
+### 🔹 Problem 7: Longest Substring Without Repeating Characters `[Medium]`
 
 **Problem Statement:** Given a string, return the length of the longest substring with no repeated characters.
 
@@ -538,7 +538,7 @@ def length_of_longest_substring(s):
 **Edge cases:** empty string → 0, all identical (`"aaaa"` → 1), all unique (→ n), spaces/unicode count as characters.
 **Common trap:** forgetting the `last[ch] >= left` guard — without it, `left` can jump *backward* and corrupt the window.
 
-## 🔹 Problem 8: 3Sum → kSum Generalization `[Medium]`/`[Hard]`
+### 🔹 Problem 8: 3Sum → kSum Generalization `[Medium]`/`[Hard]`
 
 **Problem Statement:** Find all **unique** triplets summing to 0 (3Sum). Generalize to any `k`.
 
@@ -637,11 +637,11 @@ def k_sum(nums, target, k):
 
 ---
 
-# 4. Pattern Recognition Cheatsheet
+## 4. Pattern Recognition Cheatsheet
 
 > 🧠 **Before you read this section:** you've now seen the four variants in action. The skill that separates strong candidates is *recognizing which variant a new problem needs within seconds*. This section turns that recognition into a repeatable procedure.
 
-## Decision Tree
+### Decision Tree
 
 ```
 START: read the problem
@@ -666,7 +666,7 @@ START: read the problem
     └─ YES → SAME-DIRECTION read/write pointers
 ```
 
-## Input Type → Strategy Mapping
+### Input Type → Strategy Mapping
 
 | Input signal | Strategy |
 |---|---|
@@ -679,7 +679,7 @@ START: read the problem
 | In-place remove/partition/move | Same-direction read/write |
 | Palindrome check | Opposite-end converging |
 
-## Keyword Triggers
+### Keyword Triggers
 
 - **"pair / two numbers / sum to target"** → opposite-end (sorted) or hashmap (unsorted)
 - **"contiguous / subarray / substring / window"** → sliding window
@@ -691,7 +691,7 @@ START: read the problem
 - **"palindrome"** → opposite-end
 - **"closest / min difference pair"** → sort + opposite-end
 
-## Common Traps & Edge-Case Checklist
+### Common Traps & Edge-Case Checklist
 
 - [ ] **Empty / single-element input** — does the loop guard (`while left < right`) handle it?
 - [ ] **All-duplicate input** — dedupe logic present (3Sum, remove duplicates)?
@@ -709,11 +709,11 @@ START: read the problem
 
 ---
 
-# 5. Complexity Analysis & Comparison Tables
+## 5. Complexity Analysis & Comparison Tables
 
 > 🧠 **Before you read this section:** you need one idea — *amortized linear cost*. A pointer that only ever moves forward across `n` elements does at most `n` moves total, no matter how the inner logic branches. Two such pointers ⇒ at most `2n` moves ⇒ **O(n)**.
 
-## How Two Pointers Turns O(n²) into O(n)
+### How Two Pointers Turns O(n²) into O(n)
 
 **Brute force** for "find a pair summing to target":
 ```python
@@ -734,7 +734,7 @@ Because `left` only increases and `right` only decreases, and they never cross b
 
 The magic: sorting encodes a **monotonic relationship** so that one comparison lets us discard an entire row/column of the brute-force pair matrix in a single move, instead of testing each cell.
 
-## Comparison Table: Brute Force vs Two Pointers vs Optimal
+### Comparison Table: Brute Force vs Two Pointers vs Optimal
 
 | Problem | Brute Force | Two Pointers | Best Known / Notes |
 |---|---|---|---|
@@ -747,7 +747,7 @@ The magic: sorting encodes a **monotonic relationship** so that one comparison l
 | Cycle Detection | O(n) time, **O(n)** space (set) | O(n) time, **O(1)** space | Floyd's — optimal space |
 | Merge Two Sorted | O((n+m)log(n+m)) if concat+sort | **O(n+m)** time | O(n+m) — optimal |
 
-## Space Complexity Trade-offs
+### Space Complexity Trade-offs
 
 - **O(1) is the headline win.** Opposite-end, sliding-window (numeric), fast/slow, and in-place merge all use constant extra space — critical for memory-constrained or streaming settings.
 - **Sliding window with distinct-element tracking** costs **O(k)** for the hashmap/frequency table, where `k` is the alphabet or window size. Still far below O(n²) time.
@@ -759,11 +759,11 @@ The magic: sorting encodes a **monotonic relationship** so that one comparison l
 
 ---
 
-# 6. Applications in AI / ML / LLM
+## 6. Applications in AI / ML / LLM
 
 > 🧠 **Before you read this section:** the same "coordinated window over a sequence" idea that solves array problems is *everywhere* in data-heavy systems. Sequences here are time-series, token streams, or DNA — but the pointer mechanics are identical.
 
-## AI / ML — Sliding Window over Time-Series & Feature Extraction
+### AI / ML — Sliding Window over Time-Series & Feature Extraction
 
 Time-series models (forecasting, anomaly detection, sensor analytics) rarely feed the whole signal at once. A **sliding window** carves fixed-length (or condition-bounded) segments used as model inputs or for rolling statistics.
 
@@ -785,7 +785,7 @@ def rolling_features(series, window):
 - **Where it shows up:** rolling mean/std features, windowed FFT, sequence-to-sequence batching, sliding-window augmentation, sessionization of user events.
 - **Payoff:** the running-aggregate trick avoids recomputing each window from scratch — **O(n)** instead of **O(n · window)**.
 
-## LLMs — Tokenization Windows, Attention Spans, Context Management
+### LLMs — Tokenization Windows, Attention Spans, Context Management
 
 - **Chunking for tokenization / RAG:** long documents are split into overlapping windows (e.g. 512 tokens, stride 128) using two pointers — `start` and `end` — that slide across the token stream. The overlap (`stride < window`) preserves context across chunk boundaries.
 ```python
@@ -803,13 +803,13 @@ def chunk_tokens(tokens, window=512, stride=128):
 - **Sliding-window attention** (Longformer, Mistral): instead of full O(n²) attention over all token pairs, each token attends only to a **fixed window** of neighbors — literally a two-pointer span around each position — cutting attention cost toward O(n · w).
 - **KV-cache / context management:** streaming LLMs keep a moving window of recent tokens ("attention sink" + recent window), evicting old tokens with a left pointer as new tokens arrive at the right — bounding memory for effectively infinite streams.
 
-## Data Engineering — Stream Processing & Deduplication
+### Data Engineering — Stream Processing & Deduplication
 
 - **Windowed stream aggregation:** tumbling/sliding windows over event streams (Flink, Spark Structured Streaming) are two-pointer spans over time-ordered events.
 - **Deduplication pipelines:** the same-direction read/write pointer pattern (Problem 3) deduplicates sorted record streams in a single pass with O(1) extra state.
 - **Merge of sorted shards:** the multi-array merge (Problem 6) is exactly how external merge-sort and log-structured merge (LSM) trees combine sorted runs.
 
-## Bioinformatics (bonus) — DNA Sequence Alignment
+### Bioinformatics (bonus) — DNA Sequence Alignment
 
 DNA/RNA/protein alignment slides windows across two sequences and compares regions:
 - **k-mer windows:** a sliding window of length `k` extracts overlapping subsequences (k-mers) for indexing/hashing (minimizers, MinHash).
@@ -825,11 +825,11 @@ seq B: ...G G T T C ...
 
 ---
 
-# 7. Expert Takeaways & Interview Tips
+## 7. Expert Takeaways & Interview Tips
 
 > 🧠 **Before you read this section:** the algorithms are the easy part; *communicating them under pressure* is what interviews actually test. This section is about avoiding self-inflicted wounds and signalling senior-level thinking.
 
-## Common Interview Mistakes (and fixes)
+### Common Interview Mistakes (and fixes)
 
 1. **Jumping to two pointers without justifying the invariant.** Interviewers want to hear *why* moving a pointer is safe. Say: "Because the array is sorted, moving left up can only increase the sum, so I can discard this pair." → Always state the monotonic reason.
 2. **Forgetting the input must be sorted.** Opposite-end logic silently breaks on unsorted data. Fix: state "this requires sorted input; I'll sort in O(n log n) or use a hashmap if order can't change."
@@ -838,7 +838,7 @@ seq B: ...G G T T C ...
 5. **Losing uniqueness in 3Sum.** Forgetting to skip duplicate anchors and duplicate L/R. Fix: the two inner skip-loops.
 6. **Backward `left` jump in sliding window.** Fix: `left = max(left, last[ch] + 1)` or the `last[ch] >= left` guard.
 
-## Pro Tips from Competitive Programmers
+### Pro Tips from Competitive Programmers
 
 - **Sort first, ask questions later** — if the problem hints at pairs/triplets and order doesn't matter, sorting unlocks opposite-end pointers almost every time.
 - **Two pointers ↔ sliding window are the same family.** Frame "at most K / exactly K" window problems as *expand-right, shrink-left*.
@@ -847,7 +847,7 @@ seq B: ...G G T T C ...
 - **Fast/slow also finds the middle** (`slow` ends at the midpoint when `fast` hits the end) and the **nth-from-end** (start `fast` n steps ahead).
 - **Dry-run on a length-2 input** before declaring done — most bugs surface there.
 
-## Edge Cases That Trip Up Even Experienced Engineers
+### Edge Cases That Trip Up Even Experienced Engineers
 
 - Duplicate-heavy arrays in kSum (uniqueness).
 - Windows where the constraint is "at most K distinct" vs "exactly K" (different shrink logic).
@@ -855,7 +855,7 @@ seq B: ...G G T T C ...
 - Negative numbers breaking assumptions in "container"/"trapping" reasoning (they don't — but people second-guess).
 - Empty inputs and single-element inputs silently passing wrong answers.
 
-## How to Communicate Your Approach in Interviews
+### How to Communicate Your Approach in Interviews
 
 Use this **4-beat script**:
 1. **Restate + spot the signal:** "It's a sorted array and we want a pair summing to target — that's a converging two-pointer signal."
@@ -870,14 +870,14 @@ This ordering signals *pattern recognition → correctness reasoning → complex
 
 ---
 
-# 8. Quick Reference Card
+## 8. Quick Reference Card
 
 > 📌 **Printable one-page cheat sheet.**
 
-### The One Rule
+#### The One Rule
 > Two coordinated indices sweep once; every move discards candidates that can never be the answer (relies on a **monotonic invariant**). Result: **O(n²) → O(n)**, usually **O(1)** space.
 
-### Four Variants at a Glance
+#### Four Variants at a Glance
 | Variant | Setup | Move rule | Signature problems |
 |---|---|---|---|
 | **Opposite-end** | `L=0, R=n-1` | shrink the side that overshoots | 2Sum sorted, container, trap water, palindrome |
@@ -885,10 +885,10 @@ This ordering signals *pattern recognition → correctness reasoning → complex
 | **Fast & slow** | both at head | `slow+1`, `fast+2` | cycle detect, middle, nth-from-end |
 | **Multi-array** | `i` per array | advance the smaller front | merge sorted, intersection, k-way merge |
 
-### Recognition Triggers
+#### Recognition Triggers
 `pair/target sum` → opposite-end · `contiguous/substring/longest/at-most-K` → window · `cycle/middle/nth` → fast&slow · `merge/intersect sorted` → multi-array · `in-place remove/partition` → read/write.
 
-### Complexity Snapshot
+#### Complexity Snapshot
 | Pattern | Time | Space |
 |---|---|---|
 | Opposite-end | O(n) | O(1) |
@@ -897,7 +897,7 @@ This ordering signals *pattern recognition → correctness reasoning → complex
 | Merge | O(n+m) | O(1)–O(n+m) |
 | 3Sum / kSum | O(n^(k-1)) | O(1) |
 
-### Templates
+#### Templates
 ```python
 # Opposite-end (sorted pair)
 L, R = 0, len(a) - 1
@@ -930,7 +930,7 @@ while i < len(a) and j < len(b):
 out += a[i:]; out += b[j:]
 ```
 
-### Pre-Submit Checklist
+#### Pre-Submit Checklist
 - [ ] Sorted (if opposite-end)? · [ ] Empty/1-elem guarded? · [ ] Off-by-one on window size? · [ ] Null check in fast/slow? · [ ] Duplicates skipped (kSum)? · [ ] Complexity stated?
 
 ---
@@ -939,7 +939,7 @@ out += a[i:]; out += b[j:]
 
 ---
 
-## Related Guides
+### Related Guides
 
 **Prerequisites:** [Arrays & Strings](/docs/arrays-and-strings)  
 **See also:** [Sliding Window](/docs/sliding-window) · [Binary Search & Search on Answer](/docs/binary-search) · [Linked Lists](/docs/linked-lists)

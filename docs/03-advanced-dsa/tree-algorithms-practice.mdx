@@ -1,0 +1,99 @@
+---
+title: Tree Algorithms — Practice
+sidebar_label: 🎮 Tree Algorithms (Practice)
+sidebar_position: 100
+description: Interactive practice for LCA via binary lifting, Euler tour, and tree DP — run the algorithms in your browser.
+pagination_prev: advanced-dsa/tree-algorithms
+pagination_next: null
+---
+
+# 🎮 Tree Algorithms (Practice)
+
+Companion to the **[Tree Algorithms guide](/docs/tree-algorithms)**. Edit and run to see how DFS order powers LCA, subtree queries, and tree DP.
+
+## 🐍 LCA via binary lifting
+
+<PythonRunner
+  title="🐍 Lowest common ancestor + node distance"
+  height={520}
+  code={`import math
+
+class LCA:
+    def __init__(self, n, adj, root=0):
+        self.LOG = max(1, math.ceil(math.log2(n)))
+        self.up = [[-1]*n for _ in range(self.LOG)]
+        self.depth = [0]*n
+        stack = [(root, -1)]
+        while stack:
+            u, p = stack.pop()
+            self.up[0][u] = p
+            for w in adj[u]:
+                if w != p:
+                    self.depth[w] = self.depth[u] + 1
+                    stack.append((w, u))
+        for k in range(1, self.LOG):
+            for v in range(n):
+                mid = self.up[k-1][v]
+                self.up[k][v] = self.up[k-1][mid] if mid != -1 else -1
+
+    def kth_ancestor(self, v, k):
+        for i in range(self.LOG):
+            if v == -1: break
+            if (k >> i) & 1: v = self.up[i][v]
+        return v
+
+    def query(self, u, v):
+        if self.depth[u] < self.depth[v]: u, v = v, u
+        u = self.kth_ancestor(u, self.depth[u] - self.depth[v])
+        if u == v: return u
+        for k in range(self.LOG-1, -1, -1):
+            if self.up[k][u] != self.up[k][v]:
+                u, v = self.up[k][u], self.up[k][v]
+        return self.up[0][u]
+
+adj = {0:[1,2], 1:[0,3,4], 2:[0,5], 3:[1], 4:[1], 5:[2]}
+lca = LCA(6, [adj[i] for i in range(6)])
+print("LCA(3,4) =", lca.query(3, 4))   # 1
+print("LCA(3,5) =", lca.query(3, 5))   # 0
+dist = lambda a, b: lca.depth[a] + lca.depth[b] - 2*lca.depth[lca.query(a, b)]
+print("dist(3,5) =", dist(3, 5))        # 4
+`}
+/>
+
+## 🐍 Tree DP — maximum weight independent set
+
+<PythonRunner
+  title="🐍 House Robber III (no two adjacent nodes)"
+  height={460}
+  code={`def max_independent_set(adj, values, root=0):
+    order, stack = [], [(root, -1)]; parent = {root: -1}
+    while stack:
+        u, p = stack.pop(); order.append(u)
+        for w in adj[u]:
+            if w != p:
+                parent[w] = u; stack.append((w, u))
+    incl = {v: 0 for v in adj}; excl = {v: 0 for v in adj}
+    for u in reversed(order):            # post-order: children before parent
+        incl[u] = values[u]; excl[u] = 0
+        for w in adj[u]:
+            if w != parent[u]:
+                incl[u] += excl[w]                    # take u -> skip children
+                excl[u] += max(incl[w], excl[w])      # skip u -> children free
+    return max(incl[root], excl[root])
+
+adj = {0:[1,2], 1:[0,3], 2:[0,4], 3:[1], 4:[2]}
+values = [3, 2, 3, 3, 1]
+print(max_independent_set(adj, values))   # 7
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Add **Euler tour** `tin/tout` to the LCA class and answer "is `u` an ancestor of `v`?" in `O(1)` using `tin[u] <= tin[v] and tout[v] <= tout[u]`.
+2. Solve **Kth Ancestor of a Tree Node** (LC 1483) — the lifting table *is* the solution.
+3. Compute the **tree diameter** with a single post-order pass tracking the two deepest child depths per node.
+4. Implement **rerooting DP** for **Sum of Distances in Tree** (LC 834) in `O(n)` — remember to subtract the child's contribution before passing the parent's answer down.
+
+---
+
+*Back to the [Tree Algorithms guide](/docs/tree-algorithms) → next up: [Difference Arrays & Sweep Line](/docs/array-range-techniques)*

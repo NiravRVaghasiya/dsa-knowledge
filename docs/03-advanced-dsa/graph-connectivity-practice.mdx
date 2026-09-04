@@ -1,0 +1,92 @@
+---
+title: Graph Connectivity — Practice
+sidebar_label: 🎮 Graph Connectivity (Practice)
+sidebar_position: 100
+description: Interactive practice for SCC, bridges, articulation points, and bipartite checking — run the algorithms in your browser.
+pagination_prev: advanced-dsa/graph-connectivity
+pagination_next: null
+---
+
+# 🎮 Graph Connectivity (Practice)
+
+Companion to the **[Graph Connectivity guide](/docs/graph-connectivity)**. Edit and run to see how one DFS + low-link machine answers four different structural questions.
+
+## 🐍 Bipartite check (2-coloring)
+
+<PythonRunner
+  title="🐍 Is this graph bipartite?"
+  height={400}
+  code={`from collections import deque
+
+def is_bipartite(n, adj):
+    color = [-1] * n
+    for s in range(n):
+        if color[s] != -1:
+            continue
+        color[s] = 0
+        q = deque([s])
+        while q:
+            u = q.popleft()
+            for v in adj[u]:
+                if color[v] == -1:
+                    color[v] = color[u] ^ 1        # opposite color
+                    q.append(v)
+                elif color[v] == color[u]:         # same color across an edge
+                    return False
+    return True
+
+square   = {0:[1,3], 1:[0,2], 2:[1,3], 3:[0,2]}   # 4-cycle: bipartite
+triangle = {0:[1,2], 1:[0,2], 2:[0,1]}            # odd cycle: NOT bipartite
+print("square:  ", is_bipartite(4, [square[i]   for i in range(4)]))   # True
+print("triangle:", is_bipartite(3, [triangle[i] for i in range(3)]))   # False
+`}
+/>
+
+## 🐍 Bridges & articulation points (low-link DFS)
+
+<PythonRunner
+  title="🐍 Find critical edges and vertices"
+  height={480}
+  code={`def bridges_and_articulation(n, adj):
+    disc = [-1]*n; low = [0]*n; timer = [0]
+    bridges = []; ap = set()
+    def dfs(u, parent):
+        disc[u] = low[u] = timer[0]; timer[0] += 1
+        children = 0
+        for v in adj[u]:
+            if v == parent:
+                continue
+            if disc[v] == -1:
+                children += 1
+                dfs(v, u)
+                low[u] = min(low[u], low[v])
+                if low[v] > disc[u]:                 # STRICT > : bridge
+                    bridges.append((u, v))
+                if parent != -1 and low[v] >= disc[u]:  # >= : articulation
+                    ap.add(u)
+            else:
+                low[u] = min(low[u], disc[v])
+        if parent == -1 and children > 1:            # root special case
+            ap.add(u)
+    for s in range(n):
+        if disc[s] == -1:
+            dfs(s, -1)
+    return bridges, sorted(ap)
+
+# triangle {0,1,2} then a tail 2-3-4
+adj = {0:[1,2], 1:[0,2], 2:[0,1,3], 3:[2,4], 4:[3]}
+print(bridges_and_articulation(5, [adj[i] for i in range(5)]))
+# ([(2, 3), (3, 4)], [2, 3])  -> tail edges are bridges; 2 and 3 are cut vertices
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Implement **Tarjan's SCC** (single pass, low-link) and verify it finds the same components as two-pass Kosaraju on a directed graph with cycles.
+2. Solve **Critical Connections in a Network** (LC 1192) — it is the bridge finder verbatim.
+3. Change the bridge test from `low[v] > disc[u]` to `>=` and observe that it wrongly flags every tree edge. Explain why (hint: `low[v] >= disc[v] > disc[u]`).
+4. Detect whether a directed graph has a cycle by checking for any SCC of size > 1 (or a self-loop) — connect this to topological sort's cycle detection.
+
+---
+
+*Back to the [Graph Connectivity guide](/docs/graph-connectivity) → next up: [String Matching](/docs/string-matching)*

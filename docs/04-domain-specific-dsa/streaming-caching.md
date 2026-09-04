@@ -18,8 +18,8 @@ prerequisites:
   - title: Heaps & Priority Queues
     to: /docs/heaps-and-priority-queues
 pagination_prev: domain-specific-dsa/state-machines-dags-langgraph
-pagination_next: null
-path_step: 31
+pagination_next: domain-specific-dsa/probabilistic-structures
+path_step: 37
 ---
 
 # Streaming & Caching Data Structures — Ultimate Reference Guide

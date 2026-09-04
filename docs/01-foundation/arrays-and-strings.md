@@ -50,13 +50,13 @@ path_step: 2
 
 ---
 
-# 1. Arrays
+## 1. Arrays
 
-## 1.1 Definition & Memory Model
+### 1.1 Definition & Memory Model
 
 An **array** is a collection of elements stored in a **contiguous block of memory**, where each element is accessible by an integer **index**. Contiguity is the single most important property — it is what gives arrays their signature **O(1) random access**.
 
-### The critical distinction in Python
+#### The critical distinction in Python
 
 Python has **three** things people loosely call "arrays," and conflating them is the #1 source of confusion:
 
@@ -70,7 +70,7 @@ A Python **`list`** is *not* a C array of values. It is a **dynamic array of poi
 
 A **NumPy `ndarray`** *is* the classic array: a single flat C buffer of raw values of one `dtype`, plus a small header describing how to interpret it (shape, strides, dtype). This is what makes NumPy fast and memory-dense — and it is the structure that underlies every tensor in ML.
 
-### How memory allocation actually works
+#### How memory allocation actually works
 
 **Static arrays** (C, `numpy` with fixed size) allocate a fixed-size contiguous block up front. The address of element `i` is computed directly:
 
@@ -97,7 +97,7 @@ for i in range(20):
 # proof of geometric over-allocation and amortized O(1) growth.
 ```
 
-### NumPy strides — the mechanism behind multi-dim arrays
+#### NumPy strides — the mechanism behind multi-dim arrays
 
 A NumPy array stores its data as **one flat 1D buffer**. Multi-dimensional indexing is an *interpretation layer* on top, defined by **strides**: the number of bytes to step in each dimension.
 
@@ -122,11 +122,11 @@ The element at `a[i, j]` lives at byte offset `i*strides[0] + j*strides[1]` from
 
 ---
 
-## 1.2 Indexing (Positive, Negative, Multi-dimensional)
+### 1.2 Indexing (Positive, Negative, Multi-dimensional)
 
 **Indexing** retrieves (or assigns) the element at a specific position. In Python indices are **0-based**: the first element is index `0`, the last is index `n-1`.
 
-### Positive & negative indexing
+#### Positive & negative indexing
 
 ```python
 arr = [10, 20, 30, 40, 50]
@@ -140,7 +140,7 @@ arr[-2]    # 40   -> second to last
 
 Negative indexing is syntactic sugar: `arr[-k]` is internally normalized to `arr[len(arr) - k]`. It costs the same O(1).
 
-### Out-of-bounds behavior (an important edge case)
+#### Out-of-bounds behavior (an important edge case)
 
 ```python
 arr = [10, 20, 30]
@@ -155,7 +155,7 @@ arr[-100:2]    # [10, 20]  (clamped to valid range)
 
 This asymmetry — indexing raises, slicing clamps — trips up even experienced developers. It is a frequent source of silent bugs where a slice quietly returns fewer elements than expected.
 
-### Multi-dimensional indexing (NumPy)
+#### Multi-dimensional indexing (NumPy)
 
 ```python
 import numpy as np
@@ -179,7 +179,7 @@ m[m > 5]               # array([6, 7, 8, 9]) -> flattened
 > 💡 **Analogy — the spreadsheet:**
 > *"A 2D array is a spreadsheet. `m[1, 2]` is 'go to row 1, column 2' — one direct lookup. Writing `m[1][2]` is like photocopying the entire row 1 onto a new sheet and then reading column 2 from the copy: same answer, extra work. Always give both coordinates at once."*
 
-### Complexity
+#### Complexity
 
 | Operation | Time | Space | Notes |
 |-----------|------|-------|-------|
@@ -192,11 +192,11 @@ m[m > 5]               # array([6, 7, 8, 9]) -> flattened
 
 ---
 
-## 1.3 Slicing (Basic, Step, Multi-dim)
+### 1.3 Slicing (Basic, Step, Multi-dim)
 
 **Slicing** extracts a subsequence using the syntax `arr[start:stop:step]`. The `stop` index is **exclusive**.
 
-### The mental model
+#### The mental model
 
 ```
 arr[start : stop : step]
@@ -205,7 +205,7 @@ arr[start : stop : step]
       └───────────────── inclusive start (default 0)
 ```
 
-### Basic and step slicing
+#### Basic and step slicing
 
 ```python
 arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -223,7 +223,7 @@ arr[100:200]   # []               -> out of range clamps to empty
 arr[-3:]       # [7, 8, 9]        -> last 3
 ```
 
-### 🔑 The single most important slicing gotcha: **view vs copy**
+#### 🔑 The single most important slicing gotcha: **view vs copy**
 
 This distinction is *the* thing that separates correct high-performance ML code from buggy code.
 
@@ -255,7 +255,7 @@ v = a[1:4]
 print(v.base is a)     # True  -> v is a view backed by a
 ```
 
-### Multi-dimensional slicing
+#### Multi-dimensional slicing
 
 ```python
 import numpy as np
@@ -274,7 +274,7 @@ m[..., 0]      # ellipsis: first element of last axis, any # of leading dims
 > 💡 **Analogy — the film strip vs the photocopy:**
 > *"A NumPy slice is like putting a cardboard frame over part of a film strip — you're looking at a window onto the same physical film. Draw on what you see and you've drawn on the original. A Python-list slice is like photocopying those frames onto fresh paper — scribble all you want, the original is untouched. Knowing which one you're holding is the difference between a subtle data-corruption bug and correct code."*
 
-### Complexity
+#### Complexity
 
 | Operation | Time | Space | Notes |
 |-----------|------|-------|-------|
@@ -288,11 +288,11 @@ m[..., 0]      # ellipsis: first element of last axis, any # of leading dims
 
 ---
 
-## 1.4 In-Place Operations
+### 1.4 In-Place Operations
 
 **In-place** operations mutate the existing object rather than creating a new one. They matter because they use **O(1) auxiliary space** and avoid reallocation — essential when arrays are large (think multi-GB tensors) or when an algorithm requires it.
 
-### List in-place methods (mutate, return `None`)
+#### List in-place methods (mutate, return `None`)
 
 ```python
 arr = [3, 1, 2]
@@ -311,7 +311,7 @@ arr = arr.sort()     # ❌ arr is now None!
 arr.sort()           # ✅ correct — mutate, don't reassign
 ```
 
-### NumPy in-place operations
+#### NumPy in-place operations
 
 ```python
 import numpy as np
@@ -332,7 +332,7 @@ The `out=` parameter and augmented assignments (`+=`, `*=`) are how you avoid al
 > 💡 **Analogy — repainting a room vs building a new house:**
 > *"An in-place operation is repainting the walls of your current room — same address, new color, no moving costs. A copying operation is building an entirely new house with the new paint and moving all your furniture in. For a small room, who cares. For a mansion (a 10 GB tensor), the difference is whether you run out of land (RAM) entirely."*
 
-### Complexity summary
+#### Complexity summary
 
 | Operation | Time | Space | Mutates? |
 |-----------|------|-------|----------|
@@ -349,11 +349,11 @@ The `out=` parameter and augmented assignments (`+=`, `*=`) are how you avoid al
 
 ---
 
-## 1.5 Common Algorithms
+### 1.5 Common Algorithms
 
 These three patterns — **two-pointer**, **sliding window**, and **in-place reversal** — are the workhorses of array/string interviews *and* the backbone of many production data routines (dedup, windowed aggregation, buffer manipulation).
 
-### A. Two-Pointer
+#### A. Two-Pointer
 
 Use two indices moving toward each other (or in the same direction) to solve in O(n) what naïvely looks O(n²).
 
@@ -380,7 +380,7 @@ print(two_sum_sorted([1, 2, 4, 7, 11, 15], 15))  # (0, 4) -> 1 + 11? no: (3,?) .
 - **Space:** O(1) — no extra structures.
 - **Why it beats brute force:** the sorted order lets us discard half the search space at each step, replacing the inner loop of an O(n²) double scan.
 
-### B. Sliding Window
+#### B. Sliding Window
 
 Maintain a moving window `[left, right]` and update an aggregate incrementally instead of recomputing from scratch.
 
@@ -403,7 +403,7 @@ print(max_subarray_sum_k([2, 1, 5, 1, 3, 2], 3))  # 9  (5+1+3)
 - **Time:** O(n) — the naïve version recomputes each window in O(k) for O(n·k); the sliding update makes each step O(1).
 - **Space:** O(1) for fixed windows; O(window) if you track contents (e.g., a variable-size window with a hash set for "longest substring without repeats").
 
-### C. In-Place Reversal (Two-Pointer variant)
+#### C. In-Place Reversal (Two-Pointer variant)
 
 The canonical O(1)-space transformation.
 
@@ -432,11 +432,11 @@ print(reverse_in_place([1, 2, 3, 4, 5]))  # [5, 4, 3, 2, 1]
 
 ---
 
-## 1.6 DS/AI/ML/LLM Applied Context
+### 1.6 DS/AI/ML/LLM Applied Context
 
 Arrays are not an academic topic in ML — they *are* the substrate. Every tensor is an n-dimensional array.
 
-### Tensors are strided arrays
+#### Tensors are strided arrays
 
 A PyTorch/TensorFlow tensor is a NumPy `ndarray` with autograd and GPU support bolted on. Shape, strides, dtype, contiguity — all the concepts from §1.1–1.3 apply directly.
 
@@ -461,7 +461,7 @@ mh = embeddings.reshape(4, 128, 12, 64)
 head_3 = mh[:, :, 3, :]                    # (4, 128, 64)
 ```
 
-### Why view-vs-copy is a production concern
+#### Why view-vs-copy is a production concern
 
 ```python
 # ❌ Accidentally doubling memory on a 10GB activation tensor:
@@ -472,7 +472,7 @@ padded[:, :128, :] = embeddings            # in-place write into pre-allocated b
 # big = np.concatenate([big, new_batch], axis=0)   # O(n) copy each iteration -> O(n²) total
 ```
 
-### Concrete ML/LLM touchpoints
+#### Concrete ML/LLM touchpoints
 
 - **Tokenization output:** `input_ids`, `attention_mask` are integer arrays; padding/truncation is slicing and in-place assignment.
 - **Batching:** stacking variable-length sequences into a rectangular `(batch, seq)` array via padding — indexing/slicing heavy.
@@ -485,7 +485,7 @@ padded[:, :128, :] = embeddings            # in-place write into pre-allocated b
 
 ---
 
-## 1.7 ⚡ Cheat Sheet & Expert Takeaways — Arrays
+### 1.7 ⚡ Cheat Sheet & Expert Takeaways — Arrays
 
 ```text
 ACCESS
@@ -520,9 +520,9 @@ ALGORITHMS
 
 ---
 
-# 2. Strings
+## 2. Strings
 
-## 2.1 Definition & Immutability Model
+### 2.1 Definition & Immutability Model
 
 A **string** is a sequence of characters. In Python 3, a `str` is an **immutable** sequence of Unicode code points. "Immutable" means: **once created, its contents can never change.** Any operation that appears to "modify" a string actually creates a brand-new string.
 
@@ -532,7 +532,7 @@ s = "hello"
 s = "H" + s[1:]       # ✅ creates a NEW string "Hello"; the old "hello" is discarded
 ```
 
-### Why immutability exists (the internals)
+#### Why immutability exists (the internals)
 
 1. **Hashability:** immutable objects have a stable hash, so strings can be dict keys and set members. A mutable string could change after being hashed, corrupting the hash table.
 2. **Interning & sharing:** Python can safely share (intern) identical short strings and identifiers, saving memory, precisely because no one can mutate them.
@@ -547,7 +547,7 @@ import sys
 x = sys.intern("some_repeated_key")   # force interning for fast identity comparisons
 ```
 
-### The hidden cost: string concatenation in a loop
+#### The hidden cost: string concatenation in a loop
 
 Because every concatenation builds a new string, naïve accumulation is **O(n²)**:
 
@@ -571,7 +571,7 @@ result = "".join(many_chunks)   # single allocation, single pass
 
 ---
 
-## 2.2 Indexing & Slicing
+### 2.2 Indexing & Slicing
 
 String indexing and slicing use the **exact same mechanics as lists** (§1.2–1.3) — with one crucial difference: **you can read but never write.**
 
@@ -591,7 +591,7 @@ s[100:200]  # ''         (out-of-range slice clamps, no error)
 
 Since strings are immutable, **every slice is a copy** (there's no view concept as in NumPy — but because the source can never change, Python can sometimes share the underlying buffer internally; semantically, treat slices as independent).
 
-### Unicode subtlety (the edge case pros miss)
+#### Unicode subtlety (the edge case pros miss)
 
 `len(s)` and indexing operate on **code points**, not visible glyphs:
 
@@ -608,7 +608,7 @@ import unicodedata
 unicodedata.normalize("NFC", s2) == s   # True after normalization
 ```
 
-### Complexity
+#### Complexity
 
 | Operation | Time | Space | Notes |
 |-----------|------|-------|-------|
@@ -621,7 +621,7 @@ unicodedata.normalize("NFC", s2) == s   # True after normalization
 
 ---
 
-## 2.3 In-Place Simulation Techniques
+### 2.3 In-Place Simulation Techniques
 
 Strings are immutable, so **true** in-place modification is impossible. When an algorithm demands O(1)-style in-place editing, you convert to a **mutable** representation, operate, then convert back.
 
@@ -661,7 +661,7 @@ result = buf.getvalue()             # "abc"
 > 💡 **Analogy — clay vs stone:**
 > *"You can't reshape a stone tablet (str), so you press its text into a slab of clay (a `list` of chars or a `bytearray`), remold the clay freely, then fire it back into a finished stone tablet with `''.join()`. The `bytearray` is special clay for byte/ASCII data that you truly reshape in place with O(1) edits."*
 
-### Complexity
+#### Complexity
 
 | Technique | Edit cost | Total space | Truly in-place? |
 |-----------|-----------|-------------|-----------------|
@@ -674,9 +674,9 @@ result = buf.getvalue()             # "abc"
 
 ---
 
-## 2.4 Common Algorithms (Palindrome, Anagram, Pattern Matching)
+### 2.4 Common Algorithms (Palindrome, Anagram, Pattern Matching)
 
-### A. Palindrome check (two-pointer, O(1) space)
+#### A. Palindrome check (two-pointer, O(1) space)
 
 ```python
 def is_palindrome(s):
@@ -698,7 +698,7 @@ print(is_palindrome("A man, a plan, a canal: Panama"))  # True
 ```
 - **Time:** O(n) — each pointer traverses the string once. **Space:** O(1) — in-place two-pointer.
 
-### B. Anagram check (frequency count / hashing)
+#### B. Anagram check (frequency count / hashing)
 
 ```python
 from collections import Counter
@@ -714,7 +714,7 @@ print(are_anagrams("listen", "silent"))   # True
 - **Time:** O(n) to count. **Space:** O(k), bounded by the alphabet size (O(1) for a fixed alphabet).
 - **Alternative:** sorting both — O(n log n) time, simpler but slower than counting.
 
-### C. Pattern matching — substring search
+#### C. Pattern matching — substring search
 
 ```python
 # Built-in (fast; CPython uses a Crochemore-Perrin / two-way-ish algorithm):
@@ -771,11 +771,11 @@ print(kmp_search("abxabcabcaby", "abcaby"))   # 6
 
 ---
 
-## 2.5 DS/AI/ML/LLM Applied Context (Tokenization, Regex, Preprocessing)
+### 2.5 DS/AI/ML/LLM Applied Context (Tokenization, Regex, Preprocessing)
 
 Strings are the raw input to every NLP/LLM system. Everything a model "reads" starts as string manipulation.
 
-### Tokenization is string slicing at scale
+#### Tokenization is string slicing at scale
 
 ```python
 # Whitespace/word tokenization (simplified)
@@ -791,7 +791,7 @@ raw_bytes = "café".encode("utf-8")   # b'caf\xc3\xa9' — 5 bytes for 4 chars
 # This is why byte-level tokenizers handle ANY Unicode input without "unknown" tokens.
 ```
 
-### Preprocessing = string transforms
+#### Preprocessing = string transforms
 
 ```python
 import re, unicodedata
@@ -806,7 +806,7 @@ def clean(text):
 print(clean("Visit   HTTPS://X.CO  now!!"))      # "visit <url> now!!"
 ```
 
-### Concrete NLP/LLM touchpoints
+#### Concrete NLP/LLM touchpoints
 
 - **Vocabulary lookup:** token string → integer id via a hash map (dict). The immutability/hashability of strings (§2.1) is *why* they work as dict keys here.
 - **Truncation & padding:** enforcing max sequence length is slicing (`tokens[:max_len]`) plus padding.
@@ -819,7 +819,7 @@ print(clean("Visit   HTTPS://X.CO  now!!"))      # "visit <url> now!!"
 
 ---
 
-## 2.6 ⚡ Cheat Sheet & Expert Takeaways — Strings
+### 2.6 ⚡ Cheat Sheet & Expert Takeaways — Strings
 
 ```text
 NATURE
@@ -860,7 +860,7 @@ UNICODE
 
 ---
 
-# 3. Comparative Analysis: Arrays vs Strings
+## 3. Comparative Analysis: Arrays vs Strings
 
 | Dimension | Python `list` | NumPy `ndarray` | Python `str` |
 |-----------|---------------|-----------------|--------------|
@@ -886,7 +886,7 @@ UNICODE
 
 ---
 
-# 4. Master Cheat Sheet (All Operations at a Glance)
+## 4. Master Cheat Sheet (All Operations at a Glance)
 
 ```text
 ════════════════════════════════════════════════════════════════════
@@ -937,9 +937,9 @@ UNICODE
 
 ---
 
-# 5. Interview & Production Readiness Checklist
+## 5. Interview & Production Readiness Checklist
 
-### 🎯 Interview readiness
+#### 🎯 Interview readiness
 - [ ] Explain **why** array access is O(1) (address arithmetic on contiguous memory).
 - [ ] Explain **amortized O(1)** append (geometric over-allocation) and why `insert(0,·)` is O(n).
 - [ ] State the **view vs copy** rule: list/str slice copies; NumPy basic slice is a view.
@@ -951,7 +951,7 @@ UNICODE
 - [ ] Know **KMP** conceptually (LPS table, O(n+m)) even if you use `str.find` in practice.
 - [ ] Handle edge cases out loud: empty input, single element, negative index, all-duplicates, Unicode.
 
-### 🏭 Production readiness (DS/AI/ML/LLM)
+#### 🏭 Production readiness (DS/AI/ML/LLM)
 - [ ] Default to **NumPy/tensors** for numeric data; avoid Python-list math in hot paths.
 - [ ] **Prefer views**; call `.copy()` deliberately (and to release a huge parent buffer held by a small slice).
 - [ ] Never grow arrays with repeated `concatenate`/`append` in a loop (**O(n²)**) — **pre-allocate** or collect-then-stack.
@@ -969,7 +969,7 @@ UNICODE
 
 ---
 
-## Related Guides
+### Related Guides
 
 **Prerequisites:** [Big-O Notation & Complexity Analysis](/docs/big-o-complexity)  
 **See also:** [Two Pointers](/docs/two-pointers) · [Sliding Window](/docs/sliding-window) · [Hash Maps & Sets](/docs/hash-maps-and-sets)

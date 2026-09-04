@@ -17,7 +17,7 @@ prerequisites:
   - title: Recursion & The Call Stack
     to: /docs/recursion-and-call-stack
 pagination_prev: advanced-dsa/tries
-pagination_next: domain-specific-dsa/kd-trees-ball-trees
+pagination_next: advanced-dsa/advanced-shortest-paths
 path_step: 23
 ---
 

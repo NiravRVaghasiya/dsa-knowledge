@@ -1,0 +1,79 @@
+---
+title: Multi-Head Attention — Practice
+slug: /multi-head-attention-practice
+sidebar_label: 🎮 Multi-Head Attention (Practice)
+sidebar_position: 100
+description: Runnable scaled dot-product attention, causal masking, and a live measurement of how the score matrix grows with sequence length.
+pagination_prev: domain-specific-dsa/multi-head-attention
+pagination_next: null
+---
+
+# 🎮 Multi-Head Attention (Practice)
+
+Companion to the **[Multi-Head Attention guide](/docs/multi-head-attention)**. Implement attention from scratch, add a causal mask, and watch the `L×L` score matrix grow quadratically.
+
+## 🐍 Scaled dot-product attention (with causal masking)
+
+<PythonRunner
+  title="🐍 Attention from first principles"
+  height={560}
+  code={`import numpy as np
+
+def softmax(x, axis=-1):
+    x = x - np.max(x, axis=axis, keepdims=True)   # stability: subtract row max
+    e = np.exp(x)
+    return e / np.sum(e, axis=axis, keepdims=True)
+
+def attention(Q, K, V, causal=False):
+    """Scaled dot-product attention. Q:(L,dk) K:(L,dk) V:(L,dv)."""
+    L, dk = Q.shape
+    scores = Q @ K.T / np.sqrt(dk)          # (L, L) -- the quadratic matrix
+    if causal:
+        mask = np.triu(np.ones((L, L), dtype=bool), k=1)  # future positions
+        scores = np.where(mask, -np.inf, scores)          # -inf -> softmax 0
+    A = softmax(scores, axis=-1)            # attention weights, rows sum to 1
+    return A @ V, A                          # output (L,dv), weights (L,L)
+
+np.random.seed(0)
+L, dk, dv = 4, 8, 8
+Q, K, V = (np.random.randn(L, dk) for _ in range(3))
+
+out, A = attention(Q, K, V, causal=True)
+print("attention weights (causal — lower triangular):")
+print(np.round(A, 2))
+print("row sums (each = 1):", np.round(A.sum(axis=1), 3))
+print("output shape:", out.shape)
+# Note: with a causal mask, token i only attends to tokens <= i,
+# so the weight matrix is lower-triangular.
+`}
+/>
+
+## 🐍 The quadratic wall — score matrix growth
+
+<PythonRunner
+  title="🐍 How the score matrix scales with sequence length"
+  height={420}
+  code={`# The O(L^2) attention-matrix entries vs. the O(L*D^2) projection cost.
+D = 4096                      # model dimension (fixed)
+print(f"{'L':>7} | {'score entries L^2':>18} | {'proj work ~L*D^2':>18} | regime")
+print("-"*70)
+for L in [128, 512, 2048, 8192, 32768]:
+    score = L * L             # attention matrix size (memory + ~compute)
+    proj  = L * D * D         # Q/K/V/O projection work
+    regime = "projection-bound" if proj > score * D else "attention-bound"
+    print(f"{L:>7} | {score:>18,} | {proj:>18,} | {regime}")
+# Takeaway: at small L the L*D^2 projections dominate; the L^2 term only
+# overtakes once L approaches D. "O(n^2)" alone hides which regime you're in.
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Extend `attention` to **multi-head**: split `D` into `H` heads, run attention per head, concatenate, and confirm total FLOPs are independent of `H` (heads split `D`).
+2. Implement **MQA**: share one `K`/`V` across all query heads and measure the KV-cache size reduction vs. MHA (factor of `H`).
+3. Verify the `1/√dk` scaling matters: remove it and watch the softmax saturate (weights collapse to one-hot) as `dk` grows.
+4. Add a **sliding-window** mask (attend only to the last `w` tokens) and show the score matrix becomes banded — the sparse-attention idea.
+
+---
+
+*Back to the [Multi-Head Attention guide](/docs/multi-head-attention) → next: [KV Cache & Paged Attention](/docs/kv-cache)*

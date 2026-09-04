@@ -14,9 +14,9 @@ reading_time: 27
 prerequisites:
   - title: Trees & Binary Search Trees
     to: /docs/trees-and-bst
-pagination_prev: advanced-dsa/segment-tree-fenwick
+pagination_prev: advanced-dsa/array-range-techniques
 pagination_next: domain-specific-dsa/ann-search
-path_step: 24
+path_step: 30
 ---
 
 # KD-Trees & Ball-Trees: The Complete Reference Guide
