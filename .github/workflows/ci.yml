@@ -28,20 +28,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          # Cache npm downloads keyed off the lockfile for faster installs.
-          cache: npm
 
       - name: Install dependencies
-        # `npm ci` requires a committed package-lock.json and installs exactly
-        # the pinned versions. Fall back to `npm install` only if the lockfile
-        # is somehow absent, so the workflow is robust either way.
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            echo "::warning::package-lock.json not found; running 'npm install'."
-            npm install
-          fi
+        # No package-lock.json in this repo (Bun is used locally), so we
+        # run a fresh `npm install` which resolves platform-correct optional
+        # deps (e.g. @rollup/rollup-linux-x64-gnu) on the CI runner.
+        run: npm install
 
       - name: Typecheck
         run: npm run typecheck

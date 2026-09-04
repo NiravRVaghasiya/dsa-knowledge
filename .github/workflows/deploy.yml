@@ -49,12 +49,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
 
       - name: Install & build (fallback)
         if: steps.download.outcome != 'success'
         run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+          npm install
           npm run build
 
       - name: Upload Pages artifact
