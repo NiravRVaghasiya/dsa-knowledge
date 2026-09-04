@@ -17,7 +17,7 @@ prerequisites:
     to: /docs/graph-theory
 pagination_prev: domain-specific-dsa/graph-algorithms-kg-graphrag
 pagination_next: domain-specific-dsa/streaming-caching
-path_step: 30
+path_step: 36
 ---
 
 # State Machines & DAGs for Agents: The LangGraph Mental Model

@@ -19,7 +19,7 @@ prerequisites:
     to: /docs/shortest-path
 pagination_prev: domain-specific-dsa/beam-search
 pagination_next: domain-specific-dsa/state-machines-dags-langgraph
-path_step: 29
+path_step: 35
 ---
 
 # Ultimate Guide: Graph Algorithms for Knowledge Graphs & GraphRAG
@@ -37,7 +37,7 @@ path_step: 29
 5. [Advanced / Bonus Algorithms](#5-advanced--bonus-algorithms)
 6. [Comparison Table](#6-comparison-table)
 7. [Decision Guide: Which Algorithm When?](#7-decision-guide-which-algorithm-when)
-8. [Key Takeaways](#8-key-takeaways)
+8. [Key Takeaways](#8-key-takeaways-for-practitioners)
 
 ---
 

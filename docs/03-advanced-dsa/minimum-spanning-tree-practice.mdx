@@ -1,0 +1,80 @@
+---
+title: Minimum Spanning Trees — Practice
+sidebar_label: 🎮 Minimum Spanning Trees (Practice)
+sidebar_position: 100
+description: Interactive practice for Kruskal and Prim — build MSTs in your browser and see the greedy choice in action.
+pagination_prev: advanced-dsa/minimum-spanning-tree
+pagination_next: null
+---
+
+# 🎮 Minimum Spanning Trees (Practice)
+
+Companion to the **[Minimum Spanning Trees guide](/docs/minimum-spanning-tree)**. Run both algorithms on the same graph and confirm they produce the same total weight.
+
+## 🎬 Watch it work — Kruskal accepts edges cheapest-first
+
+The bars are candidate edge weights in sorted order; green = accepted into the MST, orange = rejected (would form a cycle).
+
+<AlgoViz
+  title="Kruskal — process edges by increasing weight"
+  frames={[{"array": [1, 2, 3, 4, 5], "caption": "Edges sorted by weight: 1,2,3,4,5. Start with all vertices separate."}, {"array": [1, 2, 3, 4, 5], "highlights": {"0": "done"}, "caption": "Edge w=1 (0-1): endpoints separate -> ACCEPT"}, {"array": [1, 2, 3, 4, 5], "highlights": {"0": "done", "1": "done"}, "caption": "Edge w=2 (1-2): separate -> ACCEPT"}, {"array": [1, 2, 3, 4, 5], "highlights": {"0": "done", "1": "done", "2": "compare"}, "caption": "Edge w=3 (0-2): 0 and 2 already connected -> REJECT (cycle)"}, {"array": [1, 2, 3, 4, 5], "highlights": {"0": "done", "1": "done", "2": "compare", "3": "done"}, "caption": "Edge w=4 (1-3): separate -> ACCEPT. Now V-1=3 edges -> STOP."}, {"array": [1, 2, 3, 4, 5], "highlights": {"0": "done", "1": "done", "3": "done"}, "caption": "MST = edges {1,2,4}, total weight 7 ✓"}]}
+/>
+
+## 🐍 Kruskal (union-find) vs. Prim (heap)
+
+<PythonRunner
+  title="🐍 Both MST algorithms on the same graph"
+  height={520}
+  code={`import heapq
+
+class DSU:
+    def __init__(self, n):
+        self.p = list(range(n)); self.r = [0]*n
+    def find(self, x):
+        while self.p[x] != x:
+            self.p[x] = self.p[self.p[x]]; x = self.p[x]
+        return x
+    def union(self, a, b):
+        ra, rb = self.find(a), self.find(b)
+        if ra == rb: return False
+        if self.r[ra] < self.r[rb]: ra, rb = rb, ra
+        self.p[rb] = ra
+        if self.r[ra] == self.r[rb]: self.r[ra] += 1
+        return True
+
+def kruskal(n, edges):                 # edges: (w, u, v)
+    dsu = DSU(n); total = 0; chosen = 0
+    for w, u, v in sorted(edges):
+        if dsu.union(u, v):
+            total += w; chosen += 1
+            if chosen == n - 1: break
+    return total
+
+def prim(n, adj, start=0):             # adj[u] = [(v, w), ...]
+    in_tree = [False]*n; total = 0; seen = 0
+    heap = [(0, start)]
+    while heap and seen < n:
+        w, u = heapq.heappop(heap)
+        if in_tree[u]: continue
+        in_tree[u] = True; total += w; seen += 1
+        for v, wt in adj[u]:
+            if not in_tree[v]: heapq.heappush(heap, (wt, v))
+    return total
+
+edges = [(1,0,1),(3,0,2),(2,1,2),(4,1,3),(5,2,3)]
+adj = {0:[(1,1),(2,3)], 1:[(0,1),(2,2),(3,4)], 2:[(0,3),(1,2),(3,5)], 3:[(1,4),(2,5)]}
+print("Kruskal:", kruskal(4, edges))                       # 7
+print("Prim:   ", prim(4, [adj[i] for i in range(4)]))     # 7  (same weight)
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Modify Prim to **key the heap on cumulative distance** instead of edge weight. Confirm it now builds a *shortest-path tree*, **not** an MST — this is the classic Prim/Dijkstra confusion.
+2. Solve **Min Cost to Connect All Points** (LC 1584) with Prim's `O(V²)` dense version (no heap) and compare speed to the heap version on a complete graph.
+3. Implement the **virtual-node well trick** for **Min Cost to Supply Water** (LC 1168): add an edge from a virtual source to each house with the well cost.
+4. Build the MST of a distance graph over 2-D points, then **cut the 2 heaviest edges** to get 3 single-linkage clusters. Print the clusters.
+
+---
+
+*Back to the [Minimum Spanning Trees guide](/docs/minimum-spanning-tree) → next up: [Graph Connectivity](/docs/graph-connectivity)*

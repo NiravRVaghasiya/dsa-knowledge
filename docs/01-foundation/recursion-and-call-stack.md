@@ -36,7 +36,7 @@ path_step: 5
 7. [Recursion in AI, ML & LLM Systems](#7-recursion-in-ai-ml--llm-systems)
 8. [Expert Takeaways & Mental Models](#8-expert-takeaways--mental-models)
 9. [Quick Reference Cheat Sheet](#9-quick-reference-cheat-sheet)
-10. [Practice Problem Set (Tiered)](#10-practice-problem-set-tiered-beginner--advanced)
+10. [Practice Problem Set (Tiered)](#10-practice-problem-set-tiered-beginner---advanced)
 
 ---
 

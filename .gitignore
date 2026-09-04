@@ -1,5 +1,9 @@
 # Dependencies
 /node_modules
+# This project uses npm (package-lock.json). Ignore the local bun lockfile if
+# a contributor happens to use bun to install.
+bun.lock
+bun.lockb
 # Production build
 /build
 # Docusaurus cache

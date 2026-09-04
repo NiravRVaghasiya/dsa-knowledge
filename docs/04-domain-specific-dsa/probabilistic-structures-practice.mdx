@@ -1,0 +1,93 @@
+---
+title: Probabilistic Structures II — Practice
+sidebar_label: 🎮 HyperLogLog & Cuckoo (Practice)
+sidebar_position: 100
+description: Interactive practice for HyperLogLog, skip lists, and cuckoo hashing — run the structures in your browser.
+pagination_prev: domain-specific-dsa/probabilistic-structures
+pagination_next: null
+---
+
+# 🎮 Probabilistic Structures II (Practice)
+
+Companion to the **[Probabilistic Structures II guide](/docs/probabilistic-structures)**. Run these to see approximate counting and randomized structure in action.
+
+## 🐍 HyperLogLog — count distinct in tiny memory
+
+<PythonRunner
+  title="🐍 Estimate cardinality within a couple percent"
+  height={520}
+  code={`import hashlib, math
+
+class HyperLogLog:
+    def __init__(self, p=14):
+        self.p = p; self.m = 1 << p
+        self.registers = [0]*self.m
+        self.alpha = 0.7213 / (1 + 1.079/self.m) if self.m >= 128 else 0.673
+    def _hash(self, x):
+        return int.from_bytes(hashlib.blake2b(str(x).encode(), digest_size=8).digest(), "big")
+    def add(self, x):
+        h = self._hash(x)
+        idx = h & (self.m - 1)
+        w = h >> self.p
+        rank = 1
+        while w & 1 == 0 and rank <= 64 - self.p:
+            rank += 1; w >>= 1
+        self.registers[idx] = max(self.registers[idx], rank)
+    def count(self):
+        raw = self.alpha * self.m**2 / sum(2.0**-r for r in self.registers)
+        if raw <= 2.5*self.m:
+            z = self.registers.count(0)
+            if z: return round(self.m * math.log(self.m / z))
+        return round(raw)
+
+hll = HyperLogLog(p=14)
+for i in range(100_000):
+    hll.add(f"user_{i}")
+est = hll.count()
+print(f"true=100000 est={est} error={abs(est-100000)/100000:.2%}")
+`}
+/>
+
+## 🐍 Cuckoo hashing — worst-case O(1) lookup
+
+<PythonRunner
+  title="🐍 Two candidate buckets, eviction on collision"
+  height={460}
+  code={`import random
+
+class CuckooHash:
+    def __init__(self, size=16, max_kicks=50):
+        self.size = size; self.t1 = [None]*size; self.t2 = [None]*size
+        self.max_kicks = max_kicks; self._seed = random.randrange(1<<30)
+    def _h1(self, k): return hash((k, 0)) % self.size
+    def _h2(self, k): return hash((k, self._seed)) % self.size
+    def contains(self, k):
+        return self.t1[self._h1(k)] == k or self.t2[self._h2(k)] == k   # <= 2 probes
+    def insert(self, k):
+        if self.contains(k): return True
+        for _ in range(self.max_kicks):
+            i = self._h1(k)
+            if self.t1[i] is None: self.t1[i] = k; return True
+            k, self.t1[i] = self.t1[i], k        # evict from t1
+            j = self._h2(k)
+            if self.t2[j] is None: self.t2[j] = k; return True
+            k, self.t2[j] = self.t2[j], k        # evict from t2
+        return False                             # too many kicks -> would rehash
+
+ch = CuckooHash()
+for x in ["a", "b", "c", "d", "e"]:
+    ch.insert(x)
+print(ch.contains("c"), ch.contains("z"))   # True False
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Merge two HyperLogLogs by taking the **register-wise max** and confirm the result estimates the union's cardinality — this is why HLL is distributed-friendly.
+2. Implement **Design Skiplist** (LC 1206) with `search`, `add`, and `erase`; print the level distribution and check it's roughly geometric.
+3. Extend the cuckoo hash into a **cuckoo *filter*** by storing short fingerprints instead of keys, and add a `delete` operation — the thing a Bloom filter can't do.
+4. For three analytics questions — "is X present", "how many times did X appear", "how many distinct X" — pick the right structure (Bloom / Count-Min / HyperLogLog) and justify.
+
+---
+
+*Back to the [Probabilistic Structures II guide](/docs/probabilistic-structures). This is the final guide in the learning path — explore the [full index](/) or [browse by tag](/docs/tags).*

@@ -18,7 +18,7 @@ prerequisites:
     to: /docs/heaps-and-priority-queues
 pagination_prev: domain-specific-dsa/matrix-ops-attention-sparse
 pagination_next: domain-specific-dsa/graph-algorithms-kg-graphrag
-path_step: 28
+path_step: 34
 ---
 
 # Beam Search & Constrained Decoding: Complete Reference Guide

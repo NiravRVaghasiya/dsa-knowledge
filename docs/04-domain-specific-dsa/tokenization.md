@@ -20,7 +20,7 @@ prerequisites:
     to: /docs/hash-maps-and-sets
 pagination_prev: domain-specific-dsa/ann-search
 pagination_next: domain-specific-dsa/matrix-ops-attention-sparse
-path_step: 26
+path_step: 32
 ---
 
 # Ultimate Guide to Tokenization Algorithms

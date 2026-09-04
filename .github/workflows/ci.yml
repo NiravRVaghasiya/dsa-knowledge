@@ -1,0 +1,74 @@
+name: CI
+
+# Pull-request and push validation. Deployment lives in deploy.yml and only
+# runs after this workflow's checks succeed (see deploy.yml `workflow_run`).
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, typecheck, validate, test & build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          # Cache npm downloads keyed off the lockfile for faster installs.
+          cache: npm
+
+      - name: Install dependencies
+        # `npm ci` requires a committed package-lock.json and installs exactly
+        # the pinned versions. Fall back to `npm install` only if the lockfile
+        # is somehow absent, so the workflow is robust either way.
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            echo "::warning::package-lock.json not found; running 'npm install'."
+            npm install
+          fi
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Validate content metadata
+        run: npm run validate-content
+
+      - name: Validate internal links
+        run: npm run validate-links
+
+      - name: Validate concept graph
+        run: npm run validate-concepts
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Production build
+        run: npm run build
+
+      - name: Upload build artifact
+        # Reused by the deploy workflow so we never build twice.
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: build
+          retention-days: 3
+          if-no-files-found: error

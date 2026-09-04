@@ -10,7 +10,14 @@
     "serve": "docusaurus serve",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "validate-content": "node scripts/validate-content.mjs",
+    "validate-links": "node scripts/validate-links.mjs",
+    "validate-concepts": "node scripts/validate-concepts.mjs",
+    "validate": "npm run validate-content && npm run validate-links && npm run validate-concepts"
   },
   "dependencies": {
     "@docusaurus/core": "3.6.3",
@@ -29,7 +36,10 @@
     "@docusaurus/tsconfig": "3.6.3",
     "@docusaurus/types": "3.6.3",
     "@easyops-cn/docusaurus-search-local": "^0.45.0",
-    "typescript": "~5.5.2"
+    "github-slugger": "^1.5.0",
+    "gray-matter": "^4.0.3",
+    "typescript": "~5.5.2",
+    "vitest": "^2.1.8"
   },
   "overrides": {
     "webpack": "5.100.2",

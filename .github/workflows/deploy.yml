@@ -1,7 +1,13 @@
 name: Deploy to GitHub Pages
 
+# Deployment is gated on CI. It runs only after the "CI" workflow completes
+# successfully on `main`, and reuses the build artifact CI already produced
+# (no duplicate build). Manual dispatch is available as an escape hatch.
+
 on:
-  push:
+  workflow_run:
+    workflows: ['CI']
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
@@ -15,29 +21,47 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-      - name: Install dependencies
-        run: npm install
-      - name: Build website
-        run: npm run build
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: build
-
   deploy:
-    needs: build
+    # For workflow_run triggers, only proceed when CI actually succeeded.
+    # For manual dispatch, github.event.workflow_run is null so the check passes.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifact from CI
+        id: download
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: build-${{ github.event.workflow_run.head_sha || github.sha }}
+          path: build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      # Manual dispatch (or a missing artifact) has nothing to download, so
+      # build here as a fallback.
+      - name: Set up Node.js
+        if: steps.download.outcome != 'success'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install & build (fallback)
+        if: steps.download.outcome != 'success'
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+          npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

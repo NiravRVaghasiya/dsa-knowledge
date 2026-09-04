@@ -1,0 +1,80 @@
+---
+title: HNSW Deep Dive — Practice
+slug: /hnsw-deep-dive-practice
+sidebar_label: 🎮 HNSW Deep Dive (Practice)
+sidebar_position: 100
+description: Interactive greedy-descent visualization and runnable proximity-graph search for HNSW.
+pagination_prev: domain-specific-dsa/hnsw-deep-dive
+pagination_next: null
+---
+
+import {hnswGreedySearchFrames, SAMPLE_HNSW_GRAPH} from '@site/src/components/viz/algorithms/hnsw';
+
+# 🎮 HNSW Deep Dive (Practice)
+
+Companion to the **[HNSW Deep Dive guide](/docs/hnsw-deep-dive)**. Watch greedy graph descent converge on the query, then run a from-scratch (educational) proximity-graph search.
+
+## 🎬 Greedy descent toward the query (educational)
+
+Each node label is its Euclidean distance to the query 🔍. The search always hops to the closest neighbor and stops at a local minimum — the core mechanic of HNSW's per-layer routing.
+
+<Visualizer
+  title="🔍 HNSW greedy descent (educational, single layer)"
+  height={340}
+  frames={hnswGreedySearchFrames(SAMPLE_HNSW_GRAPH, 'A', {x: 0.85, y: 0.5})}
+/>
+
+> ⚠️ **Educational only.** Real HNSW searches multiple layers and keeps an `efSearch`-sized candidate beam so it can escape local minima. This shows the single-layer greedy idea.
+
+## 🐍 Greedy graph search from scratch
+
+<PythonRunner
+  title="🐍 Greedy best-first search on a proximity graph"
+  height={480}
+  code={`import math
+
+# A tiny 2-D proximity graph (id -> point) and its undirected adjacency.
+pts = {'A':(0.12,0.5),'B':(0.30,0.22),'C':(0.32,0.78),'D':(0.52,0.40),
+       'E':(0.55,0.70),'F':(0.75,0.28),'G':(0.80,0.62),'H':(0.90,0.45)}
+adj = {'A':['B','C'],'B':['A','D'],'C':['A','E'],'D':['B','E','F'],
+       'E':['C','D','G'],'F':['D','G','H'],'G':['E','F','H'],'H':['F','G']}
+
+def dist(p, q):
+    return math.hypot(p[0]-q[0], p[1]-q[1])
+
+def greedy_search(entry, query):
+    """Greedy best-first descent (one layer). Returns (node, hops, path)."""
+    cur, path = entry, [entry]
+    while True:
+        best, best_d = cur, dist(pts[cur], query)
+        for nb in adj[cur]:
+            d = dist(pts[nb], query)
+            if d < best_d:
+                best, best_d = nb, d
+        if best == cur:                 # local minimum reached
+            return cur, len(path)-1, path
+        cur = best
+        path.append(cur)
+
+query = (0.85, 0.5)
+node, hops, path = greedy_search('A', query)
+print("path:", ' -> '.join(path))
+print(f"greedy nearest: {node} (dist {dist(pts[node], query):.3f}) in {hops} hops")
+
+# Ground truth for comparison (brute force over all nodes):
+true = min(pts, key=lambda k: dist(pts[k], query))
+print(f"true nearest:   {true} (dist {dist(pts[true], query):.3f})")
+print("greedy matched truth:", node == true)
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Move the query to `(0.15, 0.5)` and re-run. Does greedy still find the true nearest? Try a query where greedy gets stuck in a **local minimum** (add a query far from any high-degree entry region).
+2. Add an `efSearch`-style beam: keep the best `ef` candidates in a heap instead of a single `cur`, and show it escapes the local minimum that trips up plain greedy.
+3. Build a *second layer* containing only `{A, D, H}` and route on it first (ef=1) before descending to layer 0 — the hierarchy idea.
+4. Measure recall: run 100 random queries, compare greedy vs. brute-force nearest, and report the match rate. Then increase node degree (`M`) and observe recall rise.
+
+---
+
+*Back to the [HNSW Deep Dive guide](/docs/hnsw-deep-dive) · see all animations on the [demos page](/viz-demos) → next: [Multi-Head Attention](/docs/multi-head-attention)*

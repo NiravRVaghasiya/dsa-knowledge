@@ -1,0 +1,82 @@
+---
+title: Difference Arrays & Sweep Line — Practice
+sidebar_label: 🎮 Difference Arrays & Sweep (Practice)
+sidebar_position: 100
+description: Interactive practice for difference arrays, coordinate compression, and sweep line — run the code in your browser.
+pagination_prev: advanced-dsa/array-range-techniques
+pagination_next: null
+---
+
+# 🎮 Difference Arrays & Sweep Line (Practice)
+
+Companion to the **[Difference Arrays, Coordinate Compression & Sweep Line guide](/docs/array-range-techniques)**. Run these to feel the shared idea: *record change at boundaries, then integrate*.
+
+## 🎬 Watch it work — a difference array integrates to the answer
+
+Three range-adds are stored as boundary events; one prefix-sum pass reconstructs the final array.
+
+<AlgoViz
+  title="Difference array: apply [0,2]+=3, [1,4]+=2, [3,3]+=5"
+  frames={[{"array": [0, 0, 0, 0, 0], "caption": "Start: all zeros. Updates recorded as +/- at boundaries in a diff array."}, {"array": [3, 3, 3, 0, 0], "highlights": {"0": "window", "1": "window", "2": "window"}, "caption": "After integrating [0,2]+=3"}, {"array": [3, 5, 5, 2, 2], "highlights": {"1": "window", "2": "window", "3": "window", "4": "window"}, "caption": "After [1,4]+=2"}, {"array": [3, 5, 5, 7, 2], "highlights": {"3": "active"}, "caption": "After [3,3]+=5"}, {"array": [3, 5, 5, 7, 2], "highlights": {"0": "done", "1": "done", "2": "done", "3": "done", "4": "done"}, "caption": "Final array after one O(n) integration pass ✓"}]}
+/>
+
+## 🐍 Difference array + sweep line
+
+<PythonRunner
+  title="🐍 Range-add (difference array) and max-overlap (sweep line)"
+  height={480}
+  code={`def apply_range_updates(n, updates):        # difference array
+    diff = [0]*(n+1)
+    for l, r, v in updates:
+        diff[l] += v
+        diff[r+1] -= v                       # cancel just past r
+    a, run = [0]*n, 0
+    for i in range(n):
+        run += diff[i]                       # integrate = prefix sum
+        a[i] = run
+    return a
+
+def max_overlap(intervals):                  # sweep line
+    events = []
+    for s, e in intervals:
+        events.append((s, +1))               # interval becomes active
+        events.append((e, -1))               # becomes inactive
+    events.sort(key=lambda x: (x[0], x[1]))  # ties: -1 before +1 (half-open)
+    active = best = 0
+    for _, d in events:
+        active += d
+        best = max(best, active)
+    return best
+
+print(apply_range_updates(5, [(0,2,3),(1,4,2),(3,3,5)]))   # [3,5,5,7,2]
+print(max_overlap([(0,30),(5,10),(15,20)]))                # 2 (rooms needed)
+`}
+/>
+
+## 🐍 Coordinate compression
+
+<PythonRunner
+  title="🐍 Collapse a huge sparse range to dense ranks"
+  height={320}
+  code={`def compress(values):
+    sorted_unique = sorted(set(values))
+    rank = {v: i for i, v in enumerate(sorted_unique)}
+    return [rank[v] for v in values], sorted_unique
+
+vals = [100, 5, 100, 90_000_000, 5]
+comp, mapping = compress(vals)
+print("compressed:", comp)     # [1, 0, 1, 2, 0]  -- ranks in 0..2
+print("map back:  ", mapping)  # [5, 100, 90000000]
+`}
+/>
+
+## 🧠 Challenge yourself
+
+1. Solve **Corporate Flight Bookings** (LC 1109) and **Car Pooling** (LC 1094) with a difference array. For Car Pooling, decide: is the alight point closed or half-open?
+2. Implement the **2-D difference array** and add `v` to a sub-rectangle in `O(1)`, then integrate with a 2-D prefix sum. Explain the fourth (inclusion–exclusion) corner.
+3. Change the sweep tie-break to **starts before ends** and observe how "touching" intervals now count as overlapping — connect this to closed vs. half-open intervals.
+4. Solve **Count of Range Sum** (LC 327) by compressing prefix sums, then range-counting with a Fenwick tree.
+
+---
+
+*Back to the [Difference Arrays & Sweep Line guide](/docs/array-range-techniques) → next up: [KD-Trees & Ball-Trees](/docs/kd-trees-ball-trees)*

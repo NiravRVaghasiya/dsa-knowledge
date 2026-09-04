@@ -24,9 +24,12 @@ export default function Playground() {
       <main className="container margin-vert--lg">
         <h1>🐍 Python Playground</h1>
         <p>
-          A full Python 3 environment running entirely in your browser (via Pyodide/WebAssembly).
-          No installation, no server — edit and run. The runtime downloads on your first run
-          (~6&nbsp;MB, cached afterwards).
+          A full Python 3 environment that executes entirely in your browser (via
+          Pyodide/WebAssembly) — nothing you type is sent to a server. On your first
+          run the runtime is downloaded from a public CDN (jsDelivr, ~6&nbsp;MB) and
+          then cached by the browser, so a working internet connection is required the
+          first time. Code runs in a Web Worker with an execution timeout, so the page
+          stays responsive and runaway loops can be stopped.
         </p>
         <PythonRunner code={STARTER} height={320} title="🐍 Scratchpad" />
       </main>

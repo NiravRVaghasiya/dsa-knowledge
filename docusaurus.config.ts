@@ -20,6 +20,14 @@ const config: Config = {
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
+  // Docusaurus only collects anchor ids from docs/MDX headings — it cannot see
+  // anchors inside custom React pages. Our deep links into React pages
+  // (/explorer#<conceptId> from the DSA→AI map, and /#learning-path from the
+  // doc step chips) are verified correct at runtime (the explorer selects the
+  // concept from window.location.hash; the homepage section has id
+  // "learning-path"), but the static checker reports them as broken. Ignore
+  // anchors rather than emit dozens of false-positive warnings on every build.
+  onBrokenAnchors: 'ignore',
 
   i18n: {defaultLocale: 'en', locales: ['en']},
 
@@ -53,8 +61,12 @@ const config: Config = {
       logo: {alt: 'Algorithms for AI', src: 'img/favicon.svg'},
       items: [
         {type: 'docSidebar', sidebarId: 'guidesSidebar', position: 'left', label: 'Guides'},
+        {to: '/explorer', label: '🧭 Concept Explorer', position: 'left'},
+        {to: '/dsa-ai-map', label: '🗺️ DSA → AI Map', position: 'left'},
+        {to: '/learning-paths', label: '🎯 Paths', position: 'left'},
         {to: '/docs/tags', label: 'Tags', position: 'left'},
         {to: '/playground', label: '🐍 Playground', position: 'left'},
+        {to: '/viz-demos', label: '🎬 Visualizations', position: 'left'},
         {
           href: `https://github.com/${GITHUB_USER}/${REPO_NAME}`,
           label: 'GitHub',
@@ -75,6 +87,14 @@ const config: Config = {
           ],
         },
         {
+          title: 'Knowledge Graph',
+          items: [
+            {label: 'Concept Explorer', to: '/explorer'},
+            {label: 'DSA → AI Map', to: '/dsa-ai-map'},
+            {label: 'Learning Paths', to: '/learning-paths'},
+          ],
+        },
+        {
           title: 'More',
           items: [
             {label: 'Browse by Tag', to: '/docs/tags'},
@@ -82,7 +102,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Algorithms for AI — 31 in-depth guides. Built with Docusaurus.`,
+      copyright: `Algorithms for AI — 43 in-depth guides. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
@@ -99,6 +119,10 @@ const config: Config = {
       {
         hashed: true,
         indexDocs: true,
+        // Index the React pages too (Concept Explorer, DSA → AI Map, Learning
+        // Paths, Playground, Visualizations) so the signature features are
+        // discoverable from the site search box, not just the docs.
+        indexPages: true,
         docsRouteBasePath: '/docs',
         highlightSearchTermsOnTargetPage: true,
         explicitSearchResultPath: true,

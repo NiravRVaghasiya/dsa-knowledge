@@ -9,6 +9,15 @@ import styles from './styles.module.css';
 type Props = WrapperProps<typeof ContentType>;
 type Prereq = {title: string; to: string};
 
+// The custom frontmatter fields this theme wrapper reads. Docusaurus types
+// frontmatter as a loose record, so we narrow it here in one place.
+type GuideFrontMatter = {
+  difficulty?: string;
+  reading_time?: number;
+  path_step?: number;
+  prerequisites?: Prereq[];
+};
+
 const DIFFICULTY: Record<string, {label: string; cls: string}> = {
   beginner: {label: 'Beginner', cls: styles.beginner},
   intermediate: {label: 'Intermediate', cls: styles.intermediate},
@@ -17,12 +26,12 @@ const DIFFICULTY: Record<string, {label: string; cls: string}> = {
 
 export default function ContentWrapper(props: Props): ReactNode {
   const {frontMatter, metadata} = useDoc();
-  const fm = frontMatter as any;
-  const difficulty = fm.difficulty as string | undefined;
-  const readingTime = fm.reading_time as number | undefined;
-  const pathStep = fm.path_step as number | undefined;
-  const PATH_TOTAL = 31;
-  const prerequisites = (fm.prerequisites as Prereq[] | undefined) ?? [];
+  const fm = frontMatter as GuideFrontMatter;
+  const difficulty = fm.difficulty;
+  const readingTime = fm.reading_time;
+  const pathStep = fm.path_step;
+  const PATH_TOTAL = 43;
+  const prerequisites = fm.prerequisites ?? [];
   const tags = metadata.tags ?? [];
   const diff = difficulty ? DIFFICULTY[difficulty] : undefined;
   const hasStrip = diff || readingTime || tags.length > 0;
